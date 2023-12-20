@@ -1,0 +1,14 @@
+.card {
+    background-color: #fff;
+}
+
+.card__image {
+    width: 339px;
+    height: 190px;
+    object-fit: cover;
+}
+
+.card__description {
+    display: flex;
+    justify-content: space-between;
+}
