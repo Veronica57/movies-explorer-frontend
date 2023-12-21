@@ -1,8 +1,8 @@
 import "./Navigation.css";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../images/headerlogo.svg";
-import NavigationPromo from "../Navigation/NavigationPromo/NavigtionPromo";
-import NavigationMovies from "../Navigation/NavigationMovies/NavigationMovies";
+import NavigationPromo from "./NavigationPromo/NavigtionPromo";
+import NavigationMovies from "./NavigationMovies/NavigationMovies";
 
 function Navigation() {
     const location = useLocation();

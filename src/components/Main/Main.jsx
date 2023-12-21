@@ -3,17 +3,22 @@ import Techs from "./Tech/Techs";
 import AboutMe from "./AboutMe/AboutMe";
 import Promo from "./Promo/Promo";
 import Portfolio from "./Portfolio/Portfolio";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 function Main() {
     return (
-        <main className="main">
-            {/* <Navigation /> */}
-            <Promo />
-            <AboutProject />
-            <Techs />
-            <AboutMe />
-            <Portfolio />
-        </main>
+        <>
+            <Header />
+            <main className="main">
+                <Promo />
+                <AboutProject />
+                <Techs />
+                <AboutMe />
+                <Portfolio />
+            </main>
+            <Footer />
+        </>
     );
 }
 

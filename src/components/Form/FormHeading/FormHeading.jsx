@@ -5,7 +5,7 @@ import logo from "../../../images/headerlogo.svg";
 function FormHeading() {
     const location = useLocation();
     return (
-        <section className="form-header">
+        <header className="form-header">
             <Link to={"/"}>
                 <img src={logo} alt="Логотип" className="form-header__logo" />
             </Link>
@@ -14,7 +14,7 @@ function FormHeading() {
                     ? "Добро пожаловать!"
                     : "Рады видеть!"}
             </h2>
-        </section>
+        </header>
     );
 }
 

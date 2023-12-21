@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #073042; */
     padding: 0 70px 0;
 }
 
@@ -15,4 +14,16 @@
 
 .navigation__logo:hover {
     opacity: 0.7;
+}
+
+@media (max-width: 1024px) {
+    .navigation {
+        padding: 0 30px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .navigation {
+        padding: 0 14px 0;
+    }
 }
