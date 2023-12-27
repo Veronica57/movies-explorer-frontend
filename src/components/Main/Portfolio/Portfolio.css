@@ -28,6 +28,7 @@
 .portfolio__item {
     border-bottom: 1px solid #E8E8E8;
     padding: 0 0 19px 0;
+    cursor: pointer;
 }
 
 .portfolio__item:last-child {
@@ -49,6 +50,10 @@
     letter-spacing: -1.2px;
     margin: 0;
     padding: 0;
+}
+
+.portfolio__link:hover {
+    color: #A0A0A0;
 }
 
 .portfolio__arrow {

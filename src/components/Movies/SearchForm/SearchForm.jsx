@@ -1,24 +1,29 @@
 import "./SearchForm.css";
-import Checkbox from "../Checkbox/Checkbox";
 
 function SearchForm() {
     return (
-        <section className="search-form">
-            <form className="search-form__line">
+        <section className="search">
+            <form className="search__form">
                 <input
+                    className="search-form__input"
                     type="text"
                     placeholder="Фильм"
-                    className="search-form__input"
-                    tabIndex={1}
                 />
-                <button
-                    type="button"
-                    className="search-form__button"
-                    tabIndex={1}>
+                <button className="search-form__button" type="button">
                     Найти
                 </button>
             </form>
-            <Checkbox />
+            <div className="search__checkbox-wrapper">
+                <label className="search__label-wrapper">
+                    <input
+                        className="search__checkbox-default"
+                        type="checkbox"
+                        value="short"
+                    />
+                    <span className="search__checkbox-custom"></span>
+                </label>
+                <p className="search__checkbox-name">Короткометражки</p>
+            </div>
         </section>
     );
 }
