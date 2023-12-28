@@ -1,0 +1,33 @@
+.nav-tab__links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-tab__link {
+    color: #FFF;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 10px 20px;
+    margin: 0;
+    max-width: 129px;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.nav-tab__link-container:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 1024px) {
+    .nav-tab__link {
+        margin: 0 auto;
+    }
+}

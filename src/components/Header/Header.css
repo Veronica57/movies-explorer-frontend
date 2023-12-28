@@ -1,8 +1,8 @@
 .header {
     margin: 0 auto;
     background-color: #073042;
-    position: sticky;
-    z-index: 1;
+    /* position: sticky; */
+    /* z-index: 1; */
     top: 0;
     box-sizing: border-box;
 }

@@ -1,4 +1,5 @@
 import "./Promo.css";
+import NavTab from "../NavTab/NavTab";
 
 function Promo() {
     return (
@@ -12,9 +13,7 @@ function Promo() {
                         Листайте ниже, чтобы узнать больше про этот проект
                         и&nbsp;его создателя.
                     </p>
-                    <a href="#about_project" className="promo__button">
-                        Узнать больше
-                    </a>
+                    <NavTab />
                 </div>
             </div>
             <div className="promo__image-container">

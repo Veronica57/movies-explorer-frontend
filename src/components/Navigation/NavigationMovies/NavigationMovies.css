@@ -1,7 +1,7 @@
 .navigation-movies {
     display: flex;
     justify-content: space-between;
-    flex-grow: 0.5;
+    flex-grow: 0.46;
 }
 
 .navigation-movies__links {

@@ -19,16 +19,15 @@
 }
 
 .login__inputs {
-    margin: 0 0 221px 0;
+    margin: 0 0 214px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
 }
 
 @media (max-width: 900px) {
     .login {
         padding: 232px 0;
-    }
-
-    .login__inputs {
-        margin: 0 0 134px 0;
     }
 }
 

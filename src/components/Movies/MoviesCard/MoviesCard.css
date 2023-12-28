@@ -38,7 +38,7 @@
 }
 
 .movies-card__duration {
-    margin: 6px 0 10px;
+    margin: 6px 0 0;
     padding: 0;
     color: #A0A0A0;
     font-family: "Inter", Arial, Helvetica, sans-serif;
