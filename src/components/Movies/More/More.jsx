@@ -2,7 +2,7 @@ import "./More.css";
 
 function More({ isShowMore }) {
     return (
-        <section className={`more ${isShowMore ? "more__show" : "more__hide"}`}>
+        <section className={`more ${isShowMore ? "more-show" : "more-hide"}`}>
             <button
                 type="button"
                 className={`more__button ${

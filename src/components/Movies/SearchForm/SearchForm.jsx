@@ -5,11 +5,11 @@ function SearchForm() {
         <section className="search">
             <form className="search__form">
                 <input
-                    className="search-form__input"
+                    className="search__form-input"
                     type="text"
                     placeholder="Фильм"
                 />
-                <button className="search-form__button" type="button">
+                <button className="search__form-button" type="button">
                     Найти
                 </button>
             </form>
