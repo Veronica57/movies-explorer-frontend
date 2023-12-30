@@ -30,5 +30,19 @@
 @media (max-width: 600px) {
     .form-header {
         padding: 0 0 80px;
+
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-header__logo {
+        margin: 0 0 50px 0;
+    }
+
+    .form-header__title {
+        text-align: center;
     }
 }

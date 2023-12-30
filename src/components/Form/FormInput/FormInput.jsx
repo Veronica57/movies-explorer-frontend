@@ -12,7 +12,6 @@ function FormInput({
         <div className="form-input__container">
             <span className="form-input__name">{span}</span>
             <input
-                type="text"
                 className={`form-input ${classError}`}
                 placeholder={placeholder}
                 value={value}

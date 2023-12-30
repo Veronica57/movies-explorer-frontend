@@ -14,12 +14,18 @@ function Login() {
                 <form className="login__form">
                     <div className="login__inputs">
                         <FormInput
+                            type="email"
+                            required
                             value={email}
                             setValue={setEmail}
                             span={"E-mail"}
                             placeholder={"Введите e-mail"}
                         />
                         <FormInput
+                            type="text"
+                            minLength={2}
+                            maxLength={30}
+                            required
                             value={password}
                             setValue={setPassword}
                             span={"Пароль"}

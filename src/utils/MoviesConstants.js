@@ -27,14 +27,14 @@ const movies = [
         image: movie2,
         duration: 6120,
         nameRU: "Киноальманах «100 лет дизайна»",
-        saved: false,
+        saved: true,
         _id: 2,
     },
     {
         image: movie3,
         duration: 6120,
         nameRU: "В погоне за Бенкси",
-        saved: false,
+        saved: true,
         _id: 3,
     },
     {
@@ -48,14 +48,14 @@ const movies = [
         image: movie5,
         duration: 6120,
         nameRU: "Бег это свобода",
-        saved: true,
+        saved: false,
         _id: 5,
     },
     {
         image: movie6,
         duration: 6120,
         nameRU: "Книготорговцы",
-        saved: true,
+        saved: false,
         _id: 6,
     },
     {
@@ -76,7 +76,7 @@ const movies = [
         image: movie9,
         duration: 6120,
         nameRU: "Дженис: Маленькая девочка грустит",
-        saved: true,
+        saved: false,
         _id: 9,
     },
     {
@@ -125,7 +125,7 @@ const movies = [
         image: movie16,
         duration: 6120,
         nameRU: "Зона",
-        saved: true,
+        saved: false,
         _id: 16,
     },
 ];

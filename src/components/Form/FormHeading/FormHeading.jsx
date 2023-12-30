@@ -6,7 +6,7 @@ function FormHeading() {
     const location = useLocation();
     return (
         <header className="form-header">
-            <Link to={"/"}>
+            <Link to={"/"} className="container">
                 <img src={logo} alt="Логотип" className="form-header__logo" />
             </Link>
             <h2 className="form-header__title">
