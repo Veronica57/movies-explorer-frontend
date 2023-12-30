@@ -1,9 +1,9 @@
-.form-input__container {
+.form__input-container {
     display: flex;
     flex-direction: column;
 }
 
-.form-input {
+.form__input {
     color: #000;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -17,11 +17,11 @@
     border-bottom: 1px solid #E8E8E8;
 }
 
-.form-input_error {
+.form__input_error {
     color: #FF3055;
 }
 
-.form-input__name {
+.form__input-name {
     color: #A0A0A0;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     font-size: 10px;
@@ -32,7 +32,7 @@
     margin: 0 0 5px 0;
 }
 
-.form-input__error-message {
+.form__input-error {
     color: #FF3055;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     font-size: 10px;

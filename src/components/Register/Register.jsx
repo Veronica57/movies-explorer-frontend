@@ -13,8 +13,8 @@ const Register = () => {
         <div className="register">
             <FormHeading />
             <main className="register__main">
-                <form className="register__form">
-                    <div className="register__inputs">
+                <form className="form">
+                    <div className="form__inputs">
                         <FormInput
                             type="text"
                             required
@@ -42,7 +42,7 @@ const Register = () => {
                             setValue={setPassword}
                             span={"Пароль"}
                             placeholder={"Введите пароль"}
-                            classError={"form-input_error"}
+                            classError={"form__input_error"}
                             errorMessage={"Что-то пошло не так..."}
                         />
                     </div>

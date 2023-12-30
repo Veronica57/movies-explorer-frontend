@@ -11,8 +11,8 @@ function Login() {
         <div className="login">
             <FormHeading />
             <main className="login__main">
-                <form className="login__form">
-                    <div className="login__inputs">
+                <form className="form">
+                    <div className="form__inputs">
                         <FormInput
                             type="email"
                             required

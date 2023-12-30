@@ -8,6 +8,12 @@
 .movies-card__image {
     width: 100%;
     object-fit: cover;
+    cursor: pointer;
+}
+
+.movies-card__image:hover {
+    opacity: 0.7;
+    transition: 0.3s ease-in-out;
 }
 
 .movies-card__info {
@@ -61,14 +67,29 @@
 
 .movies-card__button_liked {
     background-image: url("../../../images/likedMovie.svg");
+    cursor: pointer;
+}
+
+.movies-card__button_liked:hover {
+    opacity: 0.7;
 }
 
 .movies-card__button_unliked {
     background-image: url("../../../images/unlikedMovie.svg");
+    cursor: pointer;
+}
+
+.movies-card__button_unliked:hover {
+    opacity: 0.7;
 }
 
 .movies-card__button_delete {
     background-image: url("../../../images/deleteMovie.svg");
+    cursor: pointer;
+}
+
+.movies-card__button_delete:hover {
+    opacity: 0.7;
 }
 
 @media (max-width: 600px) {

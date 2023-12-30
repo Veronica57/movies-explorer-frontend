@@ -85,6 +85,10 @@
     cursor: pointer;
 }
 
+.menu-hamburger:hover {
+    opacity: 0.7;
+}
+
 .menu-hamburger_close {
     padding: 0;
     width: 22px;
@@ -99,6 +103,10 @@
     display: block;
     z-index: 2;
     background-color: #fff;
+}
+
+.menu-hamburger_close:hover {
+    opacity: 0.7;
 }
 
 @media (max-width: 1024px) {
