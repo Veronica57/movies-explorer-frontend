@@ -1,0 +1,44 @@
+.more {
+    display: flex;
+    justify-content: center;
+}
+
+.more__button {
+    width: 320px;
+    height: 36px;
+    border-radius: 6px;
+    background: #F9F9F9;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    text-align: center;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 50px 0 80px;
+}
+
+.more__button:hover {
+    opacity: 0.7;
+}
+
+.more__button_hide {
+    display: none;
+}
+
+.more__show {
+    min-height: 166px;
+}
+
+.more__hide {
+    min-height: 140px;
+}
+
+@media (max-width: 800px) {
+    .more__button {
+        width: 240px;
+    }
+}
