@@ -18,7 +18,7 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin: 50px 0 80px;
+    margin: 50px 0 76px;
 }
 
 .more__button:hover {
@@ -29,11 +29,11 @@
     display: none;
 }
 
-.more__show {
+.more-show {
     min-height: 166px;
 }
 
-.more__hide {
+.more-hide {
     min-height: 140px;
 }
 

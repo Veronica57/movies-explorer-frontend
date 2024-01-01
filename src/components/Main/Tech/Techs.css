@@ -48,6 +48,7 @@
     letter-spacing: -0.56px;
     margin: 0 auto;
     padding: 0;
+    max-width: 460px;
 }
 
 .techs__list {
@@ -128,6 +129,7 @@
         font-size: 11px;
         line-height: 16px;
         letter-spacing: -0.44px;
+        max-width: 292px;
     }
 
     .techs__list {

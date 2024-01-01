@@ -14,15 +14,18 @@ function Movies() {
     return (
         <>
             <Header />
-            <SearchForm />
-            {isPreloader ? (
-                <Preloader />
-            ) : (
-                <>
-                    <MoviesCardList movies={movies} type="all" />
-                    <More isShowMore={true} />
-                </>
-            )}
+            <main className="movies">
+                <SearchForm />
+                {isPreloader ? (
+                    <Preloader />
+                ) : (
+                    <>
+                        <MoviesCardList movies={movies} type="all" />
+                        <More isShowMore={true} />
+                    </>
+                )}
+            </main>
+
             <Footer />
         </>
     );

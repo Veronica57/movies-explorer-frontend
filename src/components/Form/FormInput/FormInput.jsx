@@ -9,16 +9,15 @@ function FormInput({
     errorMessage,
 }) {
     return (
-        <div className="form-input__container">
-            <span className="form-input__name">{span}</span>
+        <div className="form__input-container">
+            <span className="form__input-name">{span}</span>
             <input
-                type="text"
-                className={`form-input ${classError}`}
+                className={`form__input ${classError}`}
                 placeholder={placeholder}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
             />
-            <span className="form-input__error-message">{errorMessage}</span>
+            <span className="form__input-error">{errorMessage}</span>
         </div>
     );
 }

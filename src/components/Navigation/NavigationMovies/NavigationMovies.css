@@ -1,7 +1,7 @@
 .navigation-movies {
     display: flex;
     justify-content: space-between;
-    flex-grow: 0.5;
+    flex-grow: 0.46;
 }
 
 .navigation-movies__links {
@@ -74,7 +74,6 @@
     height: 44px;
     padding: 0;
     display: none;
-    position: fixed;
     top: 15px;
     right: 30px;
     border: none;
@@ -84,6 +83,10 @@
     background-color: #fff;
     background-position: center;
     cursor: pointer;
+}
+
+.menu-hamburger:hover {
+    opacity: 0.7;
 }
 
 .menu-hamburger_close {
@@ -102,6 +105,10 @@
     background-color: #fff;
 }
 
+.menu-hamburger_close:hover {
+    opacity: 0.7;
+}
+
 @media (max-width: 1024px) {
     .menu-hamburger {
         display: block;
@@ -114,8 +121,8 @@
 
 @media (max-width: 600px) {
     .menu-hamburger {
-        width: 40px;
+        width: 24px;
         height: 43px;
-        right: 14px;
+        right: 22px;
     }
 }

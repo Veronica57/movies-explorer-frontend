@@ -13,26 +13,36 @@ const Register = () => {
         <div className="register">
             <FormHeading />
             <main className="register__main">
-                <form className="register__form">
-                    <div className="register__inputs">
+                <form className="form">
+                    <div className="form__inputs">
                         <FormInput
+                            type="text"
+                            required
+                            minLength={2}
+                            maxLength={30}
                             value={name}
                             setValue={setName}
                             span={"Имя"}
                             placeholder={"Введите имя"}
                         />
                         <FormInput
+                            type="email"
+                            required
                             value={email}
                             setValue={setEmail}
                             span={"E-mail"}
                             placeholder={"Введите e-mail"}
                         />
                         <FormInput
+                            type="text"
+                            minLength={2}
+                            maxLength={30}
+                            required
                             value={password}
                             setValue={setPassword}
                             span={"Пароль"}
                             placeholder={"Введите пароль"}
-                            classError={"form-input_error"}
+                            classError={"form__input_error"}
                             errorMessage={"Что-то пошло не так..."}
                         />
                     </div>
