@@ -13,6 +13,15 @@
     gap: 34px 20px;
 }
 
+.movies-card-list__not-found {
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.88px;
+}
+
 @media (max-width: 768px) {
     .movies-card-list {
         padding: 70px 30px 10px;
@@ -30,5 +39,10 @@
 
     .movies-card-list__cards {
         gap: 34px;
+    }
+
+    .movies-card-list__not-found {
+        font-size: 18px;
+        letter-spacing: -0.72px;
     }
 }

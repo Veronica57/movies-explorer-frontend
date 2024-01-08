@@ -1,52 +1,88 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import "./Register.css";
 import FormHeading from "../Form/FormHeading/FormHeading";
 import FormInput from "../Form/FormInput/FormInput";
 import FormButtons from "../Form/FormButtons/FormButtons";
+import { useValidation } from "../../hooks/useValidation";
+import { REG_EXP_EMAIL, REG_EXP_NAME, messages } from "../../utils/constants";
 
-const Register = () => {
-    const [name, setName] = useState("Виталий");
-    const [email, setEmail] = useState("pochta@yandex.ru|");
-    const [password, setPassword] = useState("••••••••••••••");
+const Register = ({ handleSubmitRegistration, isLoading }) => {
+    const {
+        isFormValid,
+        errors,
+        onChange,
+        inputsValid,
+        setInputsValid,
+        values,
+        handleInput,
+    } = useValidation();
+    const { name, email, password } = values;
+
+    useEffect(() => {
+        setInputsValid({ name: true, email: true, password: true });
+    }, []);
 
     return (
         <div className="register">
             <FormHeading />
             <main className="register__main">
-                <form className="form">
+                <form
+                    className="form"
+                    noValidate
+                    onSubmit={(e) =>
+                        handleSubmitRegistration(e, name, email, password)
+                    }>
                     <div className="form__inputs">
                         <FormInput
                             type="text"
-                            required
+                            value={name || ""}
+                            name="name"
+                            span="Имя"
                             minLength={2}
                             maxLength={30}
-                            value={name}
-                            setValue={setName}
-                            span={"Имя"}
-                            placeholder={"Введите имя"}
+                            placeholder="Введите имя"
+                            message={errors.name || ""}
+                            inputsValid={inputsValid.name}
+                            onChange={(event) =>
+                                handleInput(
+                                    event,
+                                    REG_EXP_NAME,
+                                    messages.INPUT_NAME
+                                )
+                            }
                         />
                         <FormInput
+                            value={email || ""}
                             type="email"
-                            required
-                            value={email}
-                            setValue={setEmail}
-                            span={"E-mail"}
-                            placeholder={"Введите e-mail"}
+                            name="email"
+                            span="E-mail"
+                            placeholder="Введите e-mail"
+                            inputsValid={inputsValid.email}
+                            message={errors.email || ""}
+                            onChange={(event) =>
+                                handleInput(
+                                    event,
+                                    REG_EXP_EMAIL,
+                                    messages.INPUT_EMAIL
+                                )
+                            }
                         />
                         <FormInput
-                            type="text"
-                            minLength={2}
-                            maxLength={30}
-                            required
-                            value={password}
-                            setValue={setPassword}
-                            span={"Пароль"}
-                            placeholder={"Введите пароль"}
-                            classError={"form__input_error"}
-                            errorMessage={"Что-то пошло не так..."}
+                            type="password"
+                            value={password || ""}
+                            name="password"
+                            span="Пароль"
+                            minLength="6"
+                            placeholder="Введите пароль"
+                            inputsValid={inputsValid.password}
+                            message={errors.password || ""}
+                            onChange={onChange}
                         />
                     </div>
-                    <FormButtons />
+                    <FormButtons
+                        isFormValid={isFormValid}
+                        isLoading={isLoading}
+                    />
                 </form>
             </main>
         </div>

@@ -1,22 +1,19 @@
 import "./Navigation.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
 import logo from "../../images/headerlogo.svg";
 import NavigationPromo from "./NavigationPromo/NavigtionPromo";
-import NavigationMovies from "./NavigationMovies/NavigationMovies";
+import NavigationUser from "./NavigationUser/NavigationUser";
+import { IsLoggedInContext } from "../../contexts/IsLoggedInContext";
 
 function Navigation() {
-    const location = useLocation();
-
+    const loggedIn = useContext(IsLoggedInContext);
     return (
         <nav className="navigation">
             <Link to={"/"} tabIndex={1}>
                 <img src={logo} alt="Логотип" className="navigation__logo" />
             </Link>
-            {location.pathname === "/" ? (
-                <NavigationPromo />
-            ) : (
-                <NavigationMovies />
-            )}
+            {loggedIn ? <NavigationUser /> : <NavigationPromo />}
         </nav>
     );
 }

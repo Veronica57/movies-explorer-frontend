@@ -1,4 +1,5 @@
 import "./Footer.css";
+import { Link } from "react-router-dom";
 function Footer() {
     return (
         <footer className="footer">
@@ -7,27 +8,28 @@ function Footer() {
             </h3>
             <div className="footer__container">
                 <p className="footer__date">&copy; 2023</p>
-                <ul className="footer__links">
-                    <li>
-                        <a
-                            className="footer__link"
-                            href="https://practicum.yandex.ru/"
-                            target="_blank"
-                            rel="noreferrer">
-                            Яндекс.Практикум
-                        </a>
-                    </li>
-                    <li>
-                        {" "}
-                        <a
-                            className="footer__link"
-                            href="https://github.com/Veronica57"
-                            target="_blank"
-                            rel="noreferrer">
-                            Github
-                        </a>
-                    </li>
-                </ul>
+                <nav>
+                    <ul className="footer__links">
+                        <li>
+                            <Link
+                                className="footer__link"
+                                to={"https://practicum.yandex.ru/"}
+                                target="blank"
+                                tabIndex={1}>
+                                Яндекс.Практикум
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                className="footer__link"
+                                to={"https://github.com/Veronica57"}
+                                target="blank"
+                                tabIndex={1}>
+                                Github
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </footer>
     );

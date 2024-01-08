@@ -76,10 +76,16 @@
      font-weight: 400;
      line-height: normal;
      cursor: pointer;
+     border: none;
+     background-color: #FFF;
  }
 
  .profile__edit:hover {
      opacity: 0.7;
+ }
+
+ .profile__edit_disabled {
+     color: #A0A0A0;
  }
 
  .profile__logout {

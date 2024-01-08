@@ -1,11 +1,18 @@
 import "./FormButtons.css";
 import { Link, useLocation } from "react-router-dom";
 
-function FormButtons() {
+function FormButtons({ isFormValid, isLoading }) {
     const location = useLocation();
     return (
         <div className="form-buttons">
-            <button className="form-buttons__submit">
+            <button
+                type="submit"
+                disabled={!isFormValid || isLoading}
+                className={`form-buttons__submit ${
+                    !isFormValid || isLoading
+                        ? "form-buttons__submit_disabled"
+                        : ""
+                }`}>
                 {location.pathname === "/signup"
                     ? "Зарегистрироваться"
                     : "Войти"}
