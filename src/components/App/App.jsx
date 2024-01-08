@@ -102,12 +102,12 @@ function App() {
 
     // *** USERS *** //
     // user registration
-    async function handleSubmitRegistration(e, name, email, password) {
-        e.preventDefault();
+    async function handleSubmitRegistration(event, name, email, password) {
+        event.preventDefault();
         setIsLoading(true);
         try {
             await register(name, email, password, setMessage);
-            await handleSubmitLogin(e, email, password);
+            await handleSubmitLogin(event, email, password);
             setMessage(messages.SUCCESS_REGISTRATION);
             setNotificationIsOpen(true);
         } catch (err) {
@@ -119,8 +119,8 @@ function App() {
     }
 
     // user login
-    async function handleSubmitLogin(e, email, password) {
-        e.preventDefault();
+    async function handleSubmitLogin(event, email, password) {
+        event.preventDefault();
         setIsLoading(true);
         try {
             await login(email, password, setMessage);

@@ -29,7 +29,9 @@ function Login({ handleSubmitLogin, isLoading }) {
                 <form
                     className="form"
                     noValidate
-                    onSubmit={(e) => handleSubmitLogin(e, email, password)}>
+                    onSubmit={(event) =>
+                        handleSubmitLogin(event, email, password)
+                    }>
                     <div className="form__inputs">
                         <FormInput
                             value={email || ""}
