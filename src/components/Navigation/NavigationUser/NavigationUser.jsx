@@ -1,9 +1,9 @@
-import "./NavigationMovies.css";
+import "./NavigationUser.css";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import MenuCover from "../../MenuCover/MenuCover";
 
-function NavigationMovies() {
+function NavigationUser() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenuCover = () => {
@@ -65,4 +65,4 @@ function NavigationMovies() {
     );
 }
 
-export default NavigationMovies;
+export default NavigationUser;

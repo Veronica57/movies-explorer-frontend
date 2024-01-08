@@ -1,31 +1,45 @@
+import "./Movies.css";
 import Header from "../Header/Header";
 import SearchForm from "../Movies/SearchForm/SearchForm";
-import Preloader from "../Movies/Preloader/Preloader";
+// import Preloader from "../Movies/Preloader/Preloader";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
-import More from "../Movies/More/More";
+// import More from "../Movies/More/More";
 import Footer from "../Footer/Footer";
-import "./Movies.css";
 
-import movies from "../../utils/MoviesConstants";
-
-function Movies() {
-    const isPreloader = false;
-
+function Movies({
+    movies,
+    setValueInputMovie,
+    handleSubmit,
+    isLoading,
+    isMoviesNotFound,
+    handleCheckbox,
+    shortFilms,
+    isChecked,
+    valueInputMovie,
+    handleLikeMovie,
+    savedMovies,
+}) {
     return (
         <>
             <Header />
             <main className="movies">
-                <SearchForm />
-                {isPreloader ? (
-                    <Preloader />
-                ) : (
-                    <>
-                        <MoviesCardList movies={movies} type="all" />
-                        <More isShowMore={true} />
-                    </>
-                )}
+                <SearchForm
+                    setValueInputMovie={setValueInputMovie}
+                    handleSubmit={handleSubmit}
+                    handleCheckbox={handleCheckbox}
+                    valueInputMovie={valueInputMovie}
+                    isChecked={isChecked}
+                />
+                <MoviesCardList
+                    movies={movies}
+                    shortFilms={shortFilms}
+                    isLoading={isLoading}
+                    isMoviesNotFound={isMoviesNotFound}
+                    isChecked={isChecked}
+                    handleLikeMovie={handleLikeMovie}
+                    savedMovies={savedMovies}
+                />
             </main>
-
             <Footer />
         </>
     );

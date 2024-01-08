@@ -1,38 +1,68 @@
 import "./Login.css";
+import { useEffect } from "react";
 import FormHeading from "../Form/FormHeading/FormHeading";
 import FormInput from "../Form/FormInput/FormInput";
 import FormButtons from "../Form/FormButtons/FormButtons";
-import { useState } from "react";
+import { useValidation } from "../../hooks/useValidation";
+import { REG_EXP_EMAIL, messages } from "../../utils/constants";
 
-function Login() {
-    const [email, setEmail] = useState("pochta@yandex.ru|");
-    const [password, setPassword] = useState("");
+function Login({ handleSubmitLogin, isLoading }) {
+    const {
+        isFormValid,
+        errors,
+        onChange,
+        inputsValid,
+        setInputsValid,
+        values,
+        handleInput,
+    } = useValidation();
+    const { email, password } = values;
+
+    useEffect(() => {
+        setInputsValid({ name: true, email: true, password: true });
+    }, []);
+
     return (
         <div className="login">
             <FormHeading />
             <main className="login__main">
-                <form className="form">
+                <form
+                    className="form"
+                    noValidate
+                    onSubmit={(e) => handleSubmitLogin(e, email, password)}>
                     <div className="form__inputs">
                         <FormInput
+                            value={email || ""}
                             type="email"
-                            required
-                            value={email}
-                            setValue={setEmail}
-                            span={"E-mail"}
-                            placeholder={"Введите e-mail"}
+                            name="email"
+                            span="E-mail"
+                            placeholder="Введите e-mail"
+                            inputsValid={inputsValid.email}
+                            message={errors.email || ""}
+                            onChange={(event) =>
+                                handleInput(
+                                    event,
+                                    REG_EXP_EMAIL,
+                                    messages.INPUT_EMAIL
+                                )
+                            }
                         />
                         <FormInput
-                            type="text"
-                            minLength={2}
-                            maxLength={30}
-                            required
-                            value={password}
-                            setValue={setPassword}
-                            span={"Пароль"}
-                            placeholder={""}
+                            type="password"
+                            value={password || ""}
+                            name="password"
+                            span="Пароль"
+                            minLength="6"
+                            placeholder="Введите пароль"
+                            inputsValid={inputsValid.password}
+                            message={errors.password || ""}
+                            onChange={onChange}
                         />
                     </div>
-                    <FormButtons />
+                    <FormButtons
+                        isFormValid={isFormValid}
+                        isLoading={isLoading}
+                    />
                 </form>
             </main>
         </div>

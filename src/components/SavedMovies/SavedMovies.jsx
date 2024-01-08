@@ -1,28 +1,48 @@
 import "./SavedMovies.css";
+import { useEffect } from "react";
 import Header from "../Header/Header";
-import Preloader from "../Movies/Preloader/Preloader";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
-import More from "../Movies/More/More";
 import Footer from "../Footer/Footer";
 
-import movies from "../../utils/MoviesConstants";
+function SavedMovies({
+    savedMovies,
+    filteredSavedMovies,
+    handleRemoveButton,
+    handleSavedMoviesCheckbox,
+    isSavedMoviesChecked,
+    shortSavedFilms,
+    valueInputSavedMovie,
+    setValueInputSavedMovie,
+    handleSubmitSearchSavedMovies,
+    setIsSavedMoviesChecked,
+    setFilteredSavedMovies,
+    isSavedMoviesNotFound,
+    setIsSavedMoviesNotFound,
+}) {
+    useEffect(() => setFilteredSavedMovies(savedMovies), [savedMovies]);
+    useEffect(() => setIsSavedMoviesNotFound(false), []);
 
-function SavedMovies() {
-    const isPreloader = false;
-    const savedMovies = movies.filter((item) => item.saved);
     return (
         <div className="saved-movies">
             <Header />
-            <SearchForm />
-            {isPreloader ? (
-                <Preloader />
-            ) : (
-                <>
-                    <MoviesCardList movies={savedMovies} type={"save"} />
-                    <More isShowMore={false} />
-                </>
-            )}
+            <SearchForm
+                handleSavedMoviesCheckbox={handleSavedMoviesCheckbox}
+                isSavedMoviesChecked={isSavedMoviesChecked}
+                setValueInputSavedMovie={setValueInputSavedMovie}
+                valueInputSavedMovie={valueInputSavedMovie}
+                handleSubmitSearchSavedMovies={handleSubmitSearchSavedMovies}
+                setIsSavedMoviesChecked={setIsSavedMoviesChecked}
+            />
+            <MoviesCardList
+                savedMovies={savedMovies}
+                filteredSavedMovies={filteredSavedMovies}
+                shortSavedFilms={shortSavedFilms}
+                isSavedMoviesChecked={isSavedMoviesChecked}
+                handleRemoveButton={handleRemoveButton}
+                isSavedMoviesNotFound={isSavedMoviesNotFound}
+                setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
+            />
             <Footer />
         </div>
     );

@@ -1,13 +1,15 @@
 import "./More.css";
 
-function More({ isShowMore }) {
+function More({ getMoreMovies, isButtonHidden }) {
     return (
-        <section className={`more ${isShowMore ? "more-show" : "more-hide"}`}>
+        <section
+            className={`more ${isButtonHidden ? "more-show" : "more-hide"}`}>
             <button
                 type="button"
                 className={`more__button ${
-                    isShowMore ? "" : "more__button_hide"
-                }`}>
+                    isButtonHidden ? "" : "more__button_hide"
+                }`}
+                onClick={getMoreMovies}>
                 Ещё
             </button>
         </section>
