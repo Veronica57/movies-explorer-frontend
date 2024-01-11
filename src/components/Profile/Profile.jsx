@@ -1,138 +1,130 @@
-import { useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import "./Profile.css";
-import Header from "../Header/Header";
+import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { useValidation } from "../../hooks/useValidation";
-import { REG_EXP_EMAIL, REG_EXP_NAME, messages } from "../../utils/constants";
+import { REG_EXP_EMAIL, REG_EXP_NAME } from "../../utils/constants";
+import Header from "../Header/Header";
 
-function Profile({ handleUpdateUser, handleLogout, isLoading }) {
-    const {
-        isFormValid,
-        errors,
-        inputsValid,
-        setInputsValid,
-        values,
-        resetForm,
-        setValues,
-        handleInput,
-    } = useValidation();
-    const { email, name } = values;
-
+function Profile({ onLogout, isLogged, onSubmitForm, isResponseMessage }) {
     const currentUser = useContext(CurrentUserContext);
+    const [isDisabled, setIsDisabled] = useState(true);
+    const [isUserData, setIsUserData] = useState({});
+    const [isErorrMessage, setIsErorrMessage] = useState({});
+    const [isValid, setIsValid] = useState(false);
 
-    useEffect(() => {
-        resetForm();
-        setInputsValid({ name: true, email: true });
-        setValues({
-            name: currentUser.name || "",
-            email: currentUser.email || "",
-        });
-    }, [currentUser]);
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setIsUserData((previos) => ({ ...previos, [name]: value }));
+        setIsErorrMessage((previos) => ({
+            ...previos,
+            [name]: event.target.validationMessage,
+        }));
+    };
 
     function handleSubmit(event) {
         event.preventDefault();
-        handleUpdateUser(values);
+        onSubmitForm(isUserData);
+        currentUser.name = isUserData.name;
+        currentUser.email = isUserData.email;
+        setIsDisabled(!isDisabled);
+        setIsValid(false);
     }
 
-    function checkDuplicate() {
-        return (
-            (currentUser.name === name ? true : false) &&
-            (currentUser.email === email ? true : false)
-        );
-    }
+    useEffect(() => {
+        if (isErorrMessage.name || isErorrMessage.email) {
+            setIsValid(false);
+        } else if (
+            currentUser.name === isUserData.name &&
+            currentUser.email === isUserData.email
+        ) {
+            setIsValid(false);
+        } else setIsValid(true);
+    }, [isErorrMessage, isUserData]);
+
+    useEffect(() => {
+        setIsUserData({ name: currentUser.name, email: currentUser.email });
+    }, [currentUser]);
 
     return (
         <>
-            <Header />
+            <Header isLogged={isLogged} />
             <main className="profile">
-                <h1 className="profile__title">{`Привет, ${name}!`}</h1>
+                <h1 className="profile__title">{`Привет, ${isUserData.name}!`}</h1>
                 <form
                     className="profile__form"
-                    noValidate
-                    onSubmit={handleSubmit}>
+                    onSubmit={handleSubmit}
+                    noValidate>
                     <div className="profile__inputs">
                         <label className="profile__label">
                             <span className="profile__input-name">Имя</span>
                             <input
-                                placeholder="Введите имя"
-                                className={`profile__input ${
-                                    !inputsValid.name
-                                        ? "profile__input_error"
-                                        : ""
-                                }`}
+                                className="profile__input"
                                 type="text"
-                                value={name || ""}
+                                id="name"
                                 name="name"
+                                placeholder="Введите имя"
+                                defaultValue={isUserData.name}
+                                values={isUserData.name}
+                                required
+                                pattern={REG_EXP_NAME}
                                 minLength={2}
                                 maxLength={30}
-                                required
-                                onChange={(event) =>
-                                    handleInput(
-                                        event,
-                                        REG_EXP_NAME,
-                                        messages.INPUT_NAME
-                                    )
-                                }
+                                disabled={isDisabled}
+                                autoComplete="off"
+                                onChange={handleChange}
                             />
                         </label>
-                        <span className="profile__error">{errors.name}</span>
-                        <label className="profile__label">
+                        <div className="profile__input-error">
+                            {isErorrMessage.name}
+                        </div>
+                        <label htmlFor="email" className="profile__label">
                             <span className="profile__input-name">E-mail</span>
                             <input
-                                value={email || ""}
+                                className="profile__input"
                                 type="email"
+                                id="email"
                                 name="email"
+                                placeholder="Введите E-mail"
+                                defaultValue={isUserData.email}
+                                values={isUserData.email}
                                 required
-                                placeholder="Введите e-mail"
-                                className={`profile__input ${
-                                    !inputsValid.email
-                                        ? "profile__input_error"
-                                        : ""
-                                }`}
-                                onChange={(event) =>
-                                    handleInput(
-                                        event,
-                                        REG_EXP_EMAIL,
-                                        messages.INPUT_EMAIL
-                                    )
-                                }
+                                pattern={REG_EXP_EMAIL}
+                                disabled={isDisabled}
+                                autoComplete="off"
+                                onChange={handleChange}
                             />
                         </label>
+                        <div className="profile__input-error profile__input-error_email">
+                            {isErorrMessage.email}
+                        </div>
                     </div>
-                    <span className="profile__error">{errors.email}</span>
-                    <div className="profile__buttons">
+                    <span className="profile__error">{isResponseMessage}</span>
+                    {isDisabled ? (
+                        <div className="profile__buttons">
+                            <p
+                                className="profile__edit"
+                                onClick={() => setIsDisabled(!isDisabled)}>
+                                Редактировать
+                            </p>
+                            <Link
+                                to={"/"}
+                                className="profile__logout"
+                                onClick={onLogout}>
+                                Выйти из аккаунта
+                            </Link>
+                        </div>
+                    ) : (
                         <button
                             type="submit"
-                            className={`profile__edit ${
-                                !isFormValid || isLoading
-                                    ? "profile__edit_disabled"
-                                    : ""
+                            className={`profile__button-save ${
+                                !isValid
+                                    ? "profile__button-save_disabled"
+                                    : "profile__button-save hover-button"
                             }`}
-                            disabled={
-                                !isFormValid || checkDuplicate() || isLoading
-                            }>
-                            Редактировать
+                            disabled={!isValid}>
+                            Сохранить
                         </button>
-                        <Link
-                            to={"/"}
-                            className="profile__logout"
-                            onClick={handleLogout}>
-                            Выйти из аккаунта
-                        </Link>
-                    </div>
-                    {/* <button
-                        type="submit"
-                        className={`profile__button-save ${
-                            !isFormValid || isLoading
-                                ? "profile__button-save_disabled"
-                                : ""
-                        }`}
-                        disabled={
-                            !isFormValid || checkDuplicate() || isLoading
-                        }>
-                        Сохранить
-                    </button> */}
+                    )}
                 </form>
             </main>
         </>

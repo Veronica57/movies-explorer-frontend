@@ -1,88 +1,103 @@
 import "./MoviesCardList.css";
+import { useEffect, useState } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import { useLocation } from "react-router-dom";
-import useScreenOrientation from "../../../hooks/useScreenOrientation";
-import Preloader from "../Preloader/Preloader";
 import More from "../More/More";
-import useCountMovies from "../../../hooks/useCountMovies";
+import {
+    WINDOW_WIDTH_1279,
+    WINDOW_WIDTH_1024,
+    WINDOW_WIDTH_600,
+    QTY_MOVIES_WIDTH_MORE_1279,
+    QTY_MOVIES_WIDTH_MORE_1024,
+    QTY_MOVIES_WIDTH_MORE_600,
+    QTY_MOVIES_WIDTH_MOBILE,
+    QTY_ADD_MOVIES_WIDTH_MORE_1279,
+    QTY_ADD_MOVIES_WIDTH_MORE_1024,
+    QTY_ADD_MOVIES_WIDTH_MORE_600,
+    QTY_ADD_MOVIES_WIDTH_MORE_MOBILE,
+} from "../../../utils/config";
 
-function MoviesCardList({
-    movies,
-    isLoading,
-    isChecked,
-    shortFilms,
-    isMoviesNotFound,
-    isSavedMoviesNotFound,
-    handleLikeMovie,
-    savedMovies,
-    shortSavedFilms,
-    handleRemoveButton,
-    isSavedMoviesChecked,
-    filteredSavedMovies,
-}) {
-    const location = useLocation();
-    const orientation = useScreenOrientation();
-    const { getMoreMovies, countRenderMovies } = useCountMovies(orientation);
+function MoviesCardList({ movies, displayOption, onClickMovieBtn }) {
+    const [isMoviesCounter, setIsMoviesCounter] = useState(0);
+    const [isQtyAddMovies, setIsQtyAddMovies] = useState(0);
+
+    // counter for added movies
+    function setNumberMovies(windowWidth) {
+        switch (true) {
+            case windowWidth > WINDOW_WIDTH_1279:
+                setIsMoviesCounter(QTY_MOVIES_WIDTH_MORE_1279);
+                setIsQtyAddMovies(QTY_ADD_MOVIES_WIDTH_MORE_1279);
+                break;
+            case windowWidth > WINDOW_WIDTH_1024:
+                setIsMoviesCounter(QTY_MOVIES_WIDTH_MORE_1024);
+                setIsQtyAddMovies(QTY_ADD_MOVIES_WIDTH_MORE_1024);
+                break;
+            case windowWidth > WINDOW_WIDTH_600:
+                setIsMoviesCounter(QTY_MOVIES_WIDTH_MORE_600);
+                setIsQtyAddMovies(QTY_ADD_MOVIES_WIDTH_MORE_600);
+                break;
+            default:
+                setIsMoviesCounter(QTY_MOVIES_WIDTH_MOBILE);
+                setIsQtyAddMovies(QTY_ADD_MOVIES_WIDTH_MORE_MOBILE);
+        }
+    }
+
+    function setMovieCounter() {
+        setIsMoviesCounter(isMoviesCounter + isQtyAddMovies);
+    }
+
+    function slowDownResize(callback) {
+        let blockedCall = false;
+        return function () {
+            if (blockedCall) return;
+            const context = this;
+            const args = arguments;
+            blockedCall = true;
+            setTimeout(() => {
+                callback.apply(context, args);
+                blockedCall = false;
+            }, 500);
+        };
+    }
+
+    useEffect(() => {
+        setNumberMovies(window.innerWidth);
+        window.addEventListener(
+            "resize",
+            (window.fn = slowDownResize((evt) =>
+                setNumberMovies(evt.currentTarget.innerWidth)
+            ))
+        );
+        return () => window.removeEventListener("resize", window.fn);
+    }, []);
 
     return (
         <section className="movies-card-list">
-            {location.pathname === "/movies" ? (
-                (isLoading && <Preloader />) || (
-                    <>
-                        {(isMoviesNotFound ||
-                            (isChecked && shortFilms.length === 0)) && (
-                            <h2 className="movies-card-list__not-found">
-                                Ничего не найдено
-                            </h2>
-                        )}
-                        {
-                            <ul className="movies-card-list__cards">
-                                {(isChecked ? shortFilms : movies)
-                                    .slice(0, countRenderMovies)
-                                    .map((card, i) => (
-                                        <MoviesCard
-                                            card={card}
-                                            key={card.id}
-                                            handleLikeMovie={handleLikeMovie}
-                                            savedMovies={savedMovies}
-                                        />
-                                    ))}
-                            </ul>
-                        }
-                        {isChecked
-                            ? shortFilms.length > countRenderMovies && (
-                                  <More getMoreMovies={getMoreMovies} />
-                              )
-                            : movies.length > countRenderMovies && (
-                                  <More getMoreMovies={getMoreMovies} />
-                              )}
-                    </>
-                )
+            <ul className="movies-card-list__cards">
+                {displayOption === "all"
+                    ? movies.slice(0, isMoviesCounter).map((item) => {
+                          return (
+                              <MoviesCard
+                                  movie={item}
+                                  key={item.id}
+                                  displayOption="all"
+                                  onClickMovieBtn={onClickMovieBtn}
+                              />
+                          );
+                      })
+                    : movies.map((item) => {
+                          return (
+                              <MoviesCard
+                                  movie={item}
+                                  key={item._id}
+                                  onClickMovieBtn={onClickMovieBtn}
+                              />
+                          );
+                      })}
+            </ul>
+            {movies.length > isMoviesCounter && displayOption === "all" ? (
+                <More setMovieCounter={setMovieCounter} />
             ) : (
-                <>
-                    {(isSavedMoviesNotFound ||
-                        (isSavedMoviesChecked &&
-                            shortSavedFilms.length === 0)) && (
-                        <h2 className="movies-card-list__not-found">
-                            Ничего не найдено
-                        </h2>
-                    )}
-                    <ul className="movies-card-list__cards">
-                        {(isSavedMoviesChecked
-                            ? shortSavedFilms
-                            : filteredSavedMovies
-                        )
-                            .slice(0, countRenderMovies)
-                            .map((card, i) => (
-                                <MoviesCard
-                                    card={card}
-                                    key={card._id}
-                                    handleRemoveButton={handleRemoveButton}
-                                    savedMovies={savedMovies}
-                                />
-                            ))}
-                    </ul>
-                </>
+                <More isBtnHiden={true} />
             )}
         </section>
     );

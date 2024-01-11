@@ -1,78 +1,65 @@
 import "./MoviesCard.css";
-import { Link, useLocation } from "react-router-dom";
-import { BASE_MOVIES_URL } from "../../../utils/constants";
+import { useContext } from "react";
+import { CurrentSavedMoviesContext } from "../../../contexts/CurrentSavedMoviesContext";
 import { getFormattedTime } from "../../../utils/utils";
 
-function MoviesCard({
-    card,
-    handleLikeMovie,
-    handleRemoveButton,
-    savedMovies,
-}) {
-    const location = useLocation();
-    function checkLike(card) {
-        return savedMovies.some((item) => item.movieId === card.id);
-    }
+function MoviesCard({ movie, displayOption, onClickMovieBtn }) {
+    const CurrentSavedMovies = useContext(CurrentSavedMoviesContext);
+    const { nameRU, duration, image } = movie;
+    const movieData = CurrentSavedMovies.filter(
+        (item) => item.movieId === movie.id
+    );
+    const isSaved = movieData.length > 0;
 
     return (
         <li className="movies-card">
-            <Link to={card.trailerLink} target="_blank">
+            <a
+                className="movies-card__trailer"
+                href={movie.trailerLink}
+                target={"_blank"}
+                rel="noreferrer">
                 <img
                     className="movies-card__image"
                     src={
-                        location.pathname === "/movies"
-                            ? `${BASE_MOVIES_URL}${card.image.url}`
-                            : `${card.image}`
+                        displayOption === "all"
+                            ? `https://api.nomoreparties.co${image.url}`
+                            : movie.image
                     }
-                    alt={card.nameRU}
+                    alt={nameRU}
                 />
-            </Link>
+            </a>
             <div className="movies-card__info">
                 <div className="movies-card__wrapper">
-                    <h2 className="movies-card__title">{card.nameRU}</h2>
-                    {location.pathname === "/movies" ? (
-                        <>
-                            <input
-                                className="movies-card__button-default"
-                                type="checkbox"
-                                checked={checkLike(card)}
-                                onChange={(e) =>
-                                    handleLikeMovie(e, {
-                                        country: card.country,
-                                        director: card.director,
-                                        duration: card.duration,
-                                        year: card.year,
-                                        description: card.description,
-                                        image: `${BASE_MOVIES_URL}${card.image.url}`,
-                                        trailerLink: card.trailerLink,
-                                        thumbnail: `${BASE_MOVIES_URL}${card.image.formats.thumbnail.url}`,
-                                        movieId: card.id,
-                                        nameRU: card.nameRU,
-                                        nameEN: card.nameEN,
-                                    })
-                                }
-                            />
-                            <span className="movies-card__button-custom"></span>
-                        </>
+                    <h2 className="movies-card__title">{nameRU}</h2>
+                    {displayOption === "all" ? (
+                        isSaved ? (
+                            <button
+                                type="button"
+                                className="movies-card__button movies-card__button_liked"
+                                onClick={() =>
+                                    onClickMovieBtn(
+                                        movie,
+                                        "delete",
+                                        movieData[0]._id
+                                    )
+                                }></button>
+                        ) : (
+                            <button
+                                type="button"
+                                className="movies-card__button movies-card__button_unliked"
+                                onClick={() =>
+                                    onClickMovieBtn(movie, "save", null)
+                                }></button>
+                        )
                     ) : (
-                        // <button
-                        //     type="button"
-                        //     className="movies-card__button movies-card__button_liked"></button>
-
-                        // <button
-                        //     type="button"
-                        //     className="movies-card__button movies-card__button_unliked"></button>
-
                         <button
                             type="button"
                             className="movies-card__button movies-card__button_delete"
-                            onClick={() =>
-                                handleRemoveButton(card._id)
-                            }></button>
+                            onClick={() => onClickMovieBtn(movie._id)}></button>
                     )}
                 </div>
                 <p className="movies-card__duration">
-                    {getFormattedTime(card.duration)}
+                    {getFormattedTime(duration)}
                 </p>
             </div>
         </li>

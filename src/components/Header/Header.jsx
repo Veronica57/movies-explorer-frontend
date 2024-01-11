@@ -1,19 +1,21 @@
 import "./Header.css";
+import { Link } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
-import { useLocation } from "react-router-dom";
 
-function Header() {
-    const location = useLocation();
-
+function Header({ isLogged }) {
     return (
-        <header
-            className={
-                location.pathname === "/"
-                    ? "header"
-                    : "header header_white-theme"
-            }>
-            <Navigation className="navigation" />
+        <header className="header">
+            <Link to="/" className="header__logo" />
+            <Navigation isLogged={isLogged} />
         </header>
+        // <header
+        //     className={
+        //         location.pathname === "/"
+        //             ? "header"
+        //             : "header header_white-theme"
+        //     }>
+        //     <Navigation className="navigation" />
+        // </header>
     );
 }
 

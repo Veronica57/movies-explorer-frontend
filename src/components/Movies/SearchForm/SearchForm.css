@@ -51,16 +51,16 @@
     cursor: pointer;
 }
 
-.search__form-button:hover {
-    /* background: #FFF;
+.hover-button {
+    background: #FFF;
     color: #3456F3;
     outline: 1px solid #3456F3;
-    transition: 0.25s ease-in-out; */
-    opacity: 0.7;
+    transition: 0.25s ease-in-out;
 }
 
 .search__form-button_disabled {
-    opacity: 0.25;
+    color: #A0A0A0;
+    background: #F5F5F5;
     cursor: default;
 }
 
@@ -102,6 +102,12 @@
     background-image: url('../../../images/checkboxON.svg');
 }
 
+.search__form-error,
+.search__form-error:focus-within {
+    outline: 2px solid #FF3055;
+    ;
+}
+
 .search__error {
     margin-top: 23px;
     min-height: 23px;
@@ -120,7 +126,10 @@
     .search__checkbox-wrapper {
         padding: 30px 0 60px 0;
         flex-direction: row-reverse;
+    }
 
+    .search__error {
+        min-height: 63px;
     }
 }
 
@@ -145,5 +154,11 @@
 
     .search__checkbox-name {
         font-size: 11px;
+    }
+
+    .search__error {
+        font-size: 12px;
+        margin-top: 10px;
+        min-height: 76px;
     }
 }

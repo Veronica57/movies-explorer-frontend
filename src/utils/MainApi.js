@@ -1,161 +1,62 @@
-import { BASE_URL } from "./constants";
-
-function checkResponse(res, setMessage) {
-    if (!res.ok) {
-        res.text().then((text) => {
-            setMessage &&
-                setMessage(JSON.parse(text).message || "Произошла ошибка");
-        });
-        return Promise.reject(`Ошибка: ${res.status}`);
+class MainApi {
+    constructor(options) {
+        this._baseUrl = options.baseUrl;
     }
-    return res.json();
-}
 
-async function request(url, options, setMessage) {
-    const res = await fetch(`${BASE_URL}${url}`, options);
-    return checkResponse(res, setMessage);
-}
+    _checkResponse(res) {
+        return res.ok ? res.json() : Promise.reject(`Код ошибки ${res.status}`);
+    }
 
-// user register
-export function register(name, email, password, setMessage) {
-    return request(
-        "/signup",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+    // get user content
+    getUserInfo() {
+        return fetch(`${this._baseUrl}/users/me`, {
             credentials: "include",
-            body: JSON.stringify({ name, email, password }),
-        },
-        setMessage
-    );
-}
+        }).then((res) => this._checkResponse(res));
+    }
 
-// user login
-export function login(email, password, setMessage) {
-    return request(
-        "/signin",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+    // get saved movies
+    getSavedMovies() {
+        return fetch(`${this._baseUrl}/movies`, {
             credentials: "include",
-            body: JSON.stringify({ email, password }),
-        },
-        setMessage
-    ).then((data) => {
-        if (data) {
-            localStorage.setItem("jwt", "isLoggedIn");
-            return data;
-        }
-    });
-}
+        }).then((res) => this._checkResponse(res));
+    }
 
-// user logout
-export function logout(setMessage) {
-    return request(
-        "/signout",
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        },
-        setMessage
-    );
-}
-
-// get current user data
-export function getCurrentUser(setMessage) {
-    return request(
-        "/users/me",
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        },
-        setMessage
-    );
-}
-
-// update user data
-export function updateProfile(data, setMessage) {
-    return request(
-        "/users/me",
-        {
+    // add user data
+    addUserInfo(userData) {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include",
-            body: JSON.stringify({
-                name: data.name,
-                email: data.email,
-            }),
-        },
-        setMessage
-    );
-}
+            body: JSON.stringify(userData),
+        }).then((res) => this._checkResponse(res));
+    }
 
-// add movie to saved movies
-export function saveMovie(dataMovie, setMessage) {
-    return request(
-        "/movies",
-        {
+    // add new movie to saved movies
+    savеMovie(movieData) {
+        return fetch(`${this._baseUrl}/movies`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include",
-            body: JSON.stringify({
-                country: dataMovie.country,
-                director: dataMovie.director,
-                duration: dataMovie.duration,
-                year: dataMovie.year,
-                description: dataMovie.description,
-                image: dataMovie.image,
-                trailerLink: dataMovie.trailerLink,
-                thumbnail: dataMovie.thumbnail,
-                movieId: dataMovie.movieId,
-                nameRU: dataMovie.nameRU,
-                nameEN: dataMovie.nameEN,
-            }),
-        },
-        setMessage
-    );
-}
+            body: JSON.stringify(movieData),
+        }).then((res) => this._checkResponse(res));
+    }
 
-// get saved movies
-export function getSavedMovies(setMessage) {
-    return request(
-        "/movies",
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        },
-        setMessage
-    );
-}
-
-// delete movie
-export function deleteMovie(movieID, setMessage) {
-    return request(
-        `/movies/${movieID}`,
-        {
+    // delete movie from saved movies
+    deleteMovie(movieId) {
+        return fetch(`${this._baseUrl}/movies/${movieId}`, {
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
             credentials: "include",
-        },
-        setMessage
-    );
+        }).then((res) => this._checkResponse(res));
+    }
 }
+
+const mainApi = new MainApi({
+    baseUrl: "https://api.nikeliot.nomoredomainsmonster.ru",
+    // baseUrl: 'http://localhost:3000',
+});
+
+export default mainApi;

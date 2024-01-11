@@ -1,48 +1,77 @@
 import "./SavedMovies.css";
-import { useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import Header from "../Header/Header";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
+import Preloader from "../Movies/Preloader/Preloader";
+import ResponseSection from "../ResponseSection/ResponseSection";
+import { NOT_FOUND_MESSAGE } from "../../utils/constants";
+import { searchSavedMovie } from "../../utils/utils";
+import { CurrentSavedMoviesContext } from "../../contexts/CurrentSavedMoviesContext";
 
-function SavedMovies({
-    savedMovies,
-    filteredSavedMovies,
-    handleRemoveButton,
-    handleSavedMoviesCheckbox,
-    isSavedMoviesChecked,
-    shortSavedFilms,
-    valueInputSavedMovie,
-    setValueInputSavedMovie,
-    handleSubmitSearchSavedMovies,
-    setIsSavedMoviesChecked,
-    setFilteredSavedMovies,
-    isSavedMoviesNotFound,
-    setIsSavedMoviesNotFound,
-}) {
-    useEffect(() => setFilteredSavedMovies(savedMovies), [savedMovies]);
-    useEffect(() => setIsSavedMoviesNotFound(false), []);
+function SavedMovies({ onClickDeleteMovie, isLogged }) {
+    const savedMovies = useContext(CurrentSavedMoviesContext);
+    const [isPreloader, setIsPreloader] = useState(false);
+    const [isRender, setIsRender] = useState(false);
+    const [isFoundMovies, setIsFoundMovies] = useState([]);
+    const [isResponseMessage, setIsResponseMessage] = useState("");
+
+    function renderMovies() {
+        setIsPreloader(true);
+        const foundMovies = searchSavedMovie(savedMovies);
+        if (foundMovies.length === 0) {
+            setIsRender(false);
+            setIsPreloader(false);
+            setIsResponseMessage(NOT_FOUND_MESSAGE);
+        } else {
+            setIsRender(true);
+            setIsPreloader(false);
+            setIsFoundMovies(foundMovies);
+        }
+    }
+
+    function onSubmitSearchMovies(searchText, shortMovieSwitch) {
+        localStorage.setItem("savedMovieSearchText", searchText);
+        localStorage.setItem("shortSavedMovieSwitch", shortMovieSwitch);
+        renderMovies();
+    }
+
+    function onClickShortMovie(shortMovieSwitch) {
+        localStorage.setItem("shortSavedMovieSwitch", shortMovieSwitch);
+        renderMovies();
+    }
+
+    useEffect(() => {
+        setIsPreloader(true);
+        renderMovies();
+    }, [savedMovies]);
 
     return (
         <div className="saved-movies">
-            <Header />
-            <SearchForm
-                handleSavedMoviesCheckbox={handleSavedMoviesCheckbox}
-                isSavedMoviesChecked={isSavedMoviesChecked}
-                setValueInputSavedMovie={setValueInputSavedMovie}
-                valueInputSavedMovie={valueInputSavedMovie}
-                handleSubmitSearchSavedMovies={handleSubmitSearchSavedMovies}
-                setIsSavedMoviesChecked={setIsSavedMoviesChecked}
-            />
-            <MoviesCardList
-                savedMovies={savedMovies}
-                filteredSavedMovies={filteredSavedMovies}
-                shortSavedFilms={shortSavedFilms}
-                isSavedMoviesChecked={isSavedMoviesChecked}
-                handleRemoveButton={handleRemoveButton}
-                isSavedMoviesNotFound={isSavedMoviesNotFound}
-                setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
-            />
+            <Header isLogged={isLogged} />
+            <main>
+                <SearchForm
+                    displayOption={"save"}
+                    onSubmitSearchMovies={onSubmitSearchMovies}
+                    onClickShortMovie={onClickShortMovie}
+                />
+                {isPreloader ? (
+                    <Preloader />
+                ) : isRender ? (
+                    <MoviesCardList
+                        movies={isFoundMovies}
+                        displayOption={"save"}
+                        onClickMovieBtn={onClickDeleteMovie}
+                    />
+                ) : (
+                    isResponseMessage && (
+                        <ResponseSection
+                            isResponseMessage={isResponseMessage}
+                        />
+                    )
+                )}
+            </main>
             <Footer />
         </div>
     );

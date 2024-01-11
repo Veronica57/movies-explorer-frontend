@@ -1,3 +1,5 @@
+import { MAX_LENGTH_SHORT_FILM } from "./config";
+
 // get formatted time
 export const getFormattedTime = (duration) => {
     const hours = Math.trunc(duration / 3600);
@@ -5,32 +7,35 @@ export const getFormattedTime = (duration) => {
     return hours > 0 ? `${hours}ч ${minutes}м` : `${minutes}м`;
 };
 
-// Get filtered movies
-export const getFilteredMovies = (arrayMovies, value) => {
-    return Array.from(arrayMovies).filter((item) => {
-        return (
-            item.nameRU
-                .toLowerCase()
-                .trim()
-                .includes(value.toLowerCase().trim()) ||
-            item.nameEN
-                .toLowerCase()
-                .trim()
-                .includes(value.toLowerCase().trim())
+// search movies
+export const searchMovie = () => {
+    const movieDataBase = JSON.parse(localStorage.getItem("movieDataBase"));
+    const searchText = localStorage.getItem("searchText").toLowerCase();
+    const shortMovieSwitch = localStorage.getItem("shortMovieSwitch");
+
+    const foundMovies = movieDataBase.filter(
+        (movie) => movie.nameRU.toLowerCase().indexOf(searchText) >= 0
+    );
+    if (shortMovieSwitch === "true")
+        return foundMovies.filter(
+            (movie) => movie.duration < MAX_LENGTH_SHORT_FILM
         );
-    });
+    else return foundMovies;
 };
 
-// Filter short movies
-export const filterShortMovies = (movies) => {
-    return movies.filter((film) => {
-        return film.duration <= 40;
-    });
-};
+// search saved movies
+export const searchSavedMovie = (movie) => {
+    const shortMovieSwitch = localStorage.getItem("shortSavedMovieSwitch");
+    const savedMovieSearchText = localStorage
+        .getItem("savedMovieSearchText")
+        .toLowerCase();
 
-//Filter saved moves
-export const filterSavedMovies = (movies, movieID) => {
-    return movies.filter((newCard) => {
-        return newCard._id !== movieID;
-    });
+    const foundMovies = movie.filter(
+        (movie) => movie.nameRU.toLowerCase().indexOf(savedMovieSearchText) >= 0
+    );
+    if (shortMovieSwitch === true || shortMovieSwitch === "true") {
+        return foundMovies.filter(
+            (movie) => movie.duration < MAX_LENGTH_SHORT_FILM
+        );
+    } else return foundMovies;
 };

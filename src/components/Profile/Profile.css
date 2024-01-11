@@ -126,7 +126,7 @@
      cursor: pointer;
  }
 
- .profile__button-save:hover {
+ .hover-button {
      opacity: 0.7;
  }
 
@@ -146,6 +146,18 @@
      text-align: center;
      padding: 0;
      margin: 189px 0 20px;
+ }
+
+ .profile__input-error {
+     min-height: 13px;
+     font-size: 9px;
+     line-height: 13px;
+     color: #FF3055;
+     text-align: right;
+ }
+
+ .profile__input-error_email {
+     min-height: 26px;
  }
 
  @media (max-width: 900px) {

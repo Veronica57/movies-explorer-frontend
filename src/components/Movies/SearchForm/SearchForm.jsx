@@ -1,91 +1,92 @@
 import "./SearchForm.css";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import CheckboxFilter from "./CheckboxFilter/CheckboxFilter";
+import { useEffect, useState } from "react";
 
 function SearchForm({
-    setValueInputMovie,
-    handleSubmit,
-    handleCheckbox,
-    valueInputMovie,
-    isChecked,
-    handleSavedMoviesCheckbox,
-    isSavedMoviesChecked,
-    setValueInputSavedMovie,
-    valueInputSavedMovie,
-    handleSubmitSearchSavedMovies,
-    setIsSavedMoviesChecked,
+    onSubmitSearchMovies,
+    onClickShortMovie,
+    displayOption,
 }) {
-    const location = useLocation();
+    const [isSearchValue, setIsSearchValue] = useState("");
+    const [isShortSwitch, setIsShortSwitch] = useState(false);
+    const [isValidationError, setIsValidationError] = useState("");
+    const [isValid, setIsValid] = useState(false);
+
+    function handleChangeSearch(evt) {
+        setIsValidationError(evt.target.validationMessage);
+        setIsSearchValue(evt.target.value);
+        setIsValid(evt.target.closest("form").checkValidity());
+    }
+
+    function onSubmitSearch(evt) {
+        evt.preventDefault();
+        if (!isValid) return;
+        onSubmitSearchMovies(isSearchValue, isShortSwitch);
+        setIsValid(false);
+    }
+
+    function handleChangeShortSwitch() {
+        onClickShortMovie(!isShortSwitch);
+        setIsShortSwitch(!isShortSwitch);
+    }
 
     useEffect(() => {
-        if (location.pathname === "/saved-movies") {
-            setValueInputSavedMovie("");
-            setIsSavedMoviesChecked(false);
+        if (displayOption === "all") {
+            const searchText = localStorage.getItem("searchText");
+            const shortMovieSwitch = localStorage.getItem("shortMovieSwitch");
+            if (searchText && shortMovieSwitch) {
+                setIsSearchValue(searchText);
+                shortMovieSwitch === "true"
+                    ? setIsShortSwitch(true)
+                    : setIsShortSwitch(false);
+            }
+        } else {
+            localStorage.setItem("savedMovieSearchText", "");
+            localStorage.setItem("shortSavedMovieSwitch", "false");
+            setIsShortSwitch(false);
         }
-    }, []);
+    }, [displayOption]);
 
     return (
         <section className="search">
-            {location.pathname === "/movies" ? (
-                <form
-                    className="search__form"
-                    onSubmit={(e) => handleSubmit(e, isChecked)}>
-                    <input
-                        className="search__form-input"
-                        type="text"
-                        placeholder="Фильм"
-                        tabIndex={1}
-                        value={valueInputMovie}
-                        onChange={(e) => setValueInputMovie(e.target.value)}
-                    />
-                    <button
-                        className="search__form-button"
-                        type="submit"
-                        tabIndex={1}>
-                        Найти
-                    </button>
-                </form>
-            ) : (
-                <form
-                    className="search__form"
-                    onSubmit={(e) => handleSubmitSearchSavedMovies(e)}>
-                    <input
-                        className="search__form-input"
-                        type="text"
-                        placeholder="Фильм"
-                        tabIndex={1}
-                        value={valueInputSavedMovie}
-                        onChange={(e) =>
-                            setValueInputSavedMovie(e.target.value)
-                        }
-                    />
-                    <button
-                        className="search__form-button"
-                        type="submit"
-                        tabIndex={1}>
-                        Найти
-                    </button>
-                </form>
-            )}
-
-            <CheckboxFilter
-                handleCheckbox={handleCheckbox}
-                isChecked={isChecked}
-                handleSavedMoviesCheckbox={handleSavedMoviesCheckbox}
-                isSavedMoviesChecked={isSavedMoviesChecked}
-            />
-            {/* <div className="search__checkbox-wrapper">
+            <form
+                className={`search__form ${
+                    isValidationError && "search__form-error"
+                }`}
+                onSubmit={onSubmitSearch}
+                noValidate>
+                <input
+                    className="search__form-input"
+                    type="text"
+                    required
+                    placeholder="Фильм"
+                    value={isSearchValue}
+                    onChange={handleChangeSearch}
+                />
+                <button
+                    className={`search__form-button ${
+                        isValid
+                            ? "hover-button"
+                            : "search__form-button_disabled"
+                    }`}
+                    type="button"
+                    onClick={onSubmitSearch}>
+                    Найти
+                </button>
+            </form>
+            <div className="search__error">{isValidationError}</div>
+            <div className="search__checkbox-wrapper">
                 <label className="search__label-wrapper">
                     <input
                         className="search__checkbox-default"
+                        checked={isShortSwitch ? true : false}
                         type="checkbox"
-                        value="short"
+                        value="shortMovieSwitch"
+                        onChange={handleChangeShortSwitch}
                     />
                     <span className="search__checkbox-custom"></span>
                 </label>
                 <p className="search__checkbox-name">Короткометражки</p>
-            </div> */}
+            </div>
         </section>
     );
 }

@@ -1,16 +1,24 @@
-import { BASE_MOVIES_URL } from "./constants";
-
-function checkResponse(res, setMessage) {
-    if (!res.ok) {
-        throw new Error(setMessage);
+class MoviesApi {
+    constructor(options) {
+        this._baseUrl = options.baseUrl;
     }
-    return res.json();
-}
-async function request(url, setMessage) {
-    const res = await fetch(`${BASE_MOVIES_URL}${url}`);
-    return checkResponse(res, setMessage);
+
+    _checkResponse(res) {
+        return res.ok ? res.json() : Promise.reject(`Код ошибки ${res.status}`);
+    }
+
+    // get movies
+    getMovies() {
+        return fetch(this._baseUrl, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((res) => this._checkResponse(res));
+    }
 }
 
-export function getMovies() {
-    return request("/beatfilm-movies", "Ошибка на сервере");
-}
+const moviesApi = new MoviesApi({
+    baseUrl: "https://api.nomoreparties.co/beatfilm-movies",
+});
+
+export default moviesApi;
