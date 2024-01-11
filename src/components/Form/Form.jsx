@@ -97,7 +97,7 @@ function Form({
             <button
                 type="submit"
                 className={`form__button ${
-                    isValid ? "hover-button" : "form__button_disabled"
+                    isValid ? "form__button" : "form__button_disabled"
                 }`}
                 disabled={!isValid}>
                 {button}
