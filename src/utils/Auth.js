@@ -1,4 +1,4 @@
-class Auth {
+class AuthApi {
     constructor(baseUrl) {
         this._baseUrl = baseUrl;
     }
@@ -7,7 +7,7 @@ class Auth {
         return res.ok ? res.json() : Promise.reject(`Код ошибки ${res.status}`);
     }
 
-    // User register
+    // user register
     registerUser(userData) {
         return fetch(`${this._baseUrl}/signup`, {
             method: "POST",
@@ -18,7 +18,7 @@ class Auth {
         }).then((res) => this._checkResponse(res));
     }
 
-    // User login
+    // user login
     loginUser(userData) {
         return fetch(`${this._baseUrl}/signin`, {
             method: "POST",
@@ -30,7 +30,7 @@ class Auth {
         }).then((res) => this._checkResponse(res));
     }
 
-    // User logout
+    // user logout
     logoutUser(email) {
         return fetch(`${this._baseUrl}/signout`, {
             method: "POST",
@@ -40,7 +40,7 @@ class Auth {
         }).then((res) => this._checkResponse(res));
     }
 
-    // Check token
+    // check token
     checkToken() {
         return fetch(`${this._baseUrl}/users/me`, {
             credentials: "include",
@@ -52,7 +52,7 @@ class Auth {
     }
 }
 
-const authApi = new Auth("https://api.nikeliot.nomoredomainsmonster.ru");
-// const authApi = new AuthApi('http://localhost:3000');
+// const authApi = new AuthApi("https://api.nikeliot.nomoredomainsmonster.ru");
+const authApi = new AuthApi("http://localhost:3000");
 
 export default authApi;

@@ -7,22 +7,22 @@ class MainApi {
         return res.ok ? res.json() : Promise.reject(`Код ошибки ${res.status}`);
     }
 
-    // get user content
+    // get user data
     getUserInfo() {
         return fetch(`${this._baseUrl}/users/me`, {
             credentials: "include",
-        }).then((res) => this._checkResponse(res));
+        }).then((result) => this._checkResponse(result));
     }
 
     // get saved movies
     getSavedMovies() {
         return fetch(`${this._baseUrl}/movies`, {
             credentials: "include",
-        }).then((res) => this._checkResponse(res));
+        }).then((result) => this._checkResponse(result));
     }
 
-    // add user data
-    addUserInfo(userData) {
+    // edit user data
+    editUserInfo(userData) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
             credentials: "include",
@@ -30,10 +30,10 @@ class MainApi {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(userData),
-        }).then((res) => this._checkResponse(res));
+        }).then((result) => this._checkResponse(result));
     }
 
-    // add new movie to saved movies
+    // add movies to saved
     savеMovie(movieData) {
         return fetch(`${this._baseUrl}/movies`, {
             method: "POST",
@@ -42,7 +42,7 @@ class MainApi {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(movieData),
-        }).then((res) => this._checkResponse(res));
+        }).then((result) => this._checkResponse(result));
     }
 
     // delete movie from saved movies
@@ -50,13 +50,13 @@ class MainApi {
         return fetch(`${this._baseUrl}/movies/${movieId}`, {
             method: "DELETE",
             credentials: "include",
-        }).then((res) => this._checkResponse(res));
+        }).then((result) => this._checkResponse(result));
     }
 }
 
 const mainApi = new MainApi({
-    baseUrl: "https://api.nikeliot.nomoredomainsmonster.ru",
-    // baseUrl: 'http://localhost:3000',
+    // baseUrl: "https://api.nikeliot.nomoredomainsmonster.ru",
+    baseUrl: "http://localhost:3000",
 });
 
 export default mainApi;

@@ -73,7 +73,7 @@ function SearchForm({
                     Найти
                 </button>
             </form>
-            <div className="search__error">{isValidationError}</div>
+            {/* <div className="search__error">{isValidationError}</div> */}
             <div className="search__checkbox-wrapper">
                 <label className="search__label-wrapper">
                     <input

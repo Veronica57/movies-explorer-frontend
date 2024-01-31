@@ -1,11 +1,11 @@
 import "./Profile.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 import { REG_EXP_EMAIL, REG_EXP_NAME } from "../../utils/constants";
 import Header from "../Header/Header";
 
-function Profile({ onLogout, isLogged, onSubmitForm, isResponseMessage }) {
+function Profile({ onLogout, loggedIn, onSubmitForm, isResponseMessage }) {
     const currentUser = useContext(CurrentUserContext);
     const [isDisabled, setIsDisabled] = useState(true);
     const [isUserData, setIsUserData] = useState({});
@@ -47,7 +47,7 @@ function Profile({ onLogout, isLogged, onSubmitForm, isResponseMessage }) {
 
     return (
         <>
-            <Header isLogged={isLogged} />
+            <Header loggedIn={loggedIn} />
             <main className="profile">
                 <h1 className="profile__title">{`Привет, ${isUserData.name}!`}</h1>
                 <form

@@ -1,8 +1,9 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { CurrentSavedMoviesContext } from "../../contexts/CurrentSavedMoviesContext";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { CurrentSavedMoviesContext } from "../../context/CurrentSavedMoviesContext";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { useNavigate } from "react-router-dom";
 //user authorization api
 import authApi from "../../utils/Auth";
 // main api
@@ -16,7 +17,8 @@ import Login from "../Login/Login";
 import Main from "../Main/Main";
 import Page404 from "../Page404/Page404";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import Popup from "../Popup/Popup";
+// import Popup from "../Popup/Popup";
+import InfoToolTip from "../InfoToolTip/InfoToolTip";
 import Preloader from "../Movies/Preloader/Preloader";
 
 import { MESSAGE_DISPLAY_TIME } from "../../utils/config";
@@ -34,13 +36,22 @@ import {
 } from "../../utils/constants";
 
 function App() {
+    const [loggedIn, setLoggedIn] = useState(
+        localStorage.getItem("_id") ? true : false
+    );
     const [isRender, setIsRender] = useState(false);
-    const [isOpenPopup, setIsOpenPopup] = useState(false);
+    const [isSucces, setIsSuccess] = useState(false);
+    const [isOpenToolTip, setIsOpenToolTip] = useState(false);
+    const [isInfoToolTipMessage, setIsInfoToolTipMessage] = useState("");
     const [isResponseMessage, setIsResponseMessage] = useState("");
-    const [isPopupMessage, setIsPopupMessage] = useState("");
-    const [isLogged, setIsLogged] = useState(false);
     const [isCurrentUser, setIsCurrentUser] = useState({});
     const [isCurrentMovies, setIsCurrentMovies] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setIsRender(true), 1000);
+        return () => clearTimeout(timeout);
+    }, [isRender]);
 
     // check token and authorize user
     useEffect(() => {
@@ -48,33 +59,37 @@ function App() {
             authApi
                 .checkToken()
                 .then((data) => {
-                    if (data) setIsLogged(true);
+                    if (data) setLoggedIn(true);
                 })
-                .catch(() => openPopup(SERVER_ERROR_MESSAGE));
+                .catch(() => {
+                    setLoggedIn(false);
+                    openToolTip(SERVER_ERROR_MESSAGE);
+                });
         }
     }, []);
 
-    function removeResponseMessage() {
+    const removeResponseMessage = () => {
         setTimeout(() => setIsResponseMessage(""), MESSAGE_DISPLAY_TIME);
-    }
+    };
 
-    // popups
-    function closePopup() {
-        setIsOpenPopup(false);
-        setIsPopupMessage("");
-    }
+    // tooltip
+    const closeToolTip = () => {
+        setIsOpenToolTip(false);
+        setIsInfoToolTipMessage("");
+    };
 
-    function openPopup(message) {
-        setIsPopupMessage(message);
-        setIsOpenPopup(true);
-    }
+    const openToolTip = (message) => {
+        setIsInfoToolTipMessage(message);
+        setIsOpenToolTip(true);
+    };
 
     // register
     function onRegister(userData) {
         authApi
             .registerUser(userData)
             .then(() => {
-                openPopup(SUCCESSFUL_REGISTRATION_MESSAGE);
+                openToolTip(SUCCESSFUL_REGISTRATION_MESSAGE);
+                setIsSuccess(true);
                 delete userData.name;
                 onLogin(userData);
             })
@@ -93,7 +108,8 @@ function App() {
             .then((result) => {
                 if (result._id) {
                     localStorage.setItem("_id", result._id);
-                    setIsLogged(true);
+                    setLoggedIn(true);
+                    navigate("/movies", { replace: true });
                 }
             })
             .catch((error) => {
@@ -110,19 +126,21 @@ function App() {
             .logoutUser()
             .then(() => {
                 localStorage.clear();
-                setIsLogged(false);
+                setLoggedIn(false);
                 setIsCurrentUser({});
                 setIsCurrentMovies([]);
+                navigate("/", { replace: true });
             })
-            .catch(() => openPopup(SERVER_ERROR_MESSAGE));
+            .catch(() => openToolTip(SERVER_ERROR_MESSAGE));
     }
 
     // update user
     function onUpdateUser(userData) {
         mainApi
-            .addUserInfo(userData)
+            .editUserInfo(userData)
             .then(() => {
-                openPopup(SUCCESSFUL_USER_UPDATED_MESSAGE);
+                openToolTip(SUCCESSFUL_USER_UPDATED_MESSAGE);
+                setIsSuccess(true);
             })
             .catch(() => {
                 setIsResponseMessage(SERVER_ERROR_MESSAGE);
@@ -141,9 +159,10 @@ function App() {
                     );
             })
             .catch((error) => {
-                if (error === BAD_REQUEST_ERROR_CODE)
-                    openPopup(MOVIE_NOT_DELETED_MESSAGE);
-                else openPopup(SERVER_ERROR_MESSAGE);
+                if (error === BAD_REQUEST_ERROR_CODE) {
+                    openToolTip(MOVIE_NOT_DELETED_MESSAGE);
+                    setIsSuccess(false);
+                } else openToolTip(SERVER_ERROR_MESSAGE);
             });
     }
 
@@ -168,36 +187,35 @@ function App() {
                 if (result._id) setIsCurrentMovies((prev) => [...prev, result]);
             })
             .catch((error) => {
-                if (error === BAD_REQUEST_ERROR_CODE)
-                    openPopup(MOVIE_NOT_SAVED_MESSAGE);
-                else openPopup(SERVER_ERROR_MESSAGE);
+                if (error === BAD_REQUEST_ERROR_CODE) {
+                    openToolTip(MOVIE_NOT_SAVED_MESSAGE);
+                    setIsSuccess(false);
+                } else {
+                    openToolTip(SERVER_ERROR_MESSAGE);
+                    setIsSuccess(false);
+                }
             });
     }
 
     // get current user data
     useEffect(() => {
-        if (isLogged) {
+        if (loggedIn) {
             mainApi
                 .getUserInfo()
                 .then((userData) => setIsCurrentUser(userData))
                 .catch((error) => console.log(error));
         }
-    }, [isLogged]);
+    }, [loggedIn]);
 
     // get saved movies
     useEffect(() => {
-        if (isLogged) {
+        if (loggedIn) {
             mainApi
                 .getSavedMovies()
                 .then((savedMovies) => setIsCurrentMovies(savedMovies))
                 .catch((error) => console.log(error));
         }
-    }, [isLogged]);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => setIsRender(true), 1000);
-        return () => clearTimeout(timeout);
-    }, [isRender]);
+    }, [loggedIn]);
 
     if (!isRender) return <Preloader />;
 
@@ -209,15 +227,15 @@ function App() {
                         <Route
                             exact
                             path="/"
-                            element={<Main isLogged={isLogged} />}
+                            element={<Main loggedIn={loggedIn} />}
                         />
-                        <Route element={<ProtectedRoute isLogged={isLogged} />}>
+                        <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
                             <Route
                                 path="/movies"
                                 element={
                                     <Movies
                                         onClickSaveMovie={onClickSaveMovie}
-                                        isLogged={isLogged}
+                                        loggedIn={loggedIn}
                                     />
                                 }
                             />
@@ -226,7 +244,7 @@ function App() {
                                 element={
                                     <SavedMovies
                                         onClickDeleteMovie={onClickDeleteMovie}
-                                        isLogged={isLogged}
+                                        loggedIn={loggedIn}
                                     />
                                 }
                             />
@@ -235,7 +253,7 @@ function App() {
                                 element={
                                     <Profile
                                         onLogout={onLogout}
-                                        isLogged={isLogged}
+                                        loggedIn={loggedIn}
                                         onSubmitForm={onUpdateUser}
                                         isResponseMessage={isResponseMessage}
                                     />
@@ -245,7 +263,7 @@ function App() {
                         <Route
                             path="/signin"
                             element={
-                                isLogged ? (
+                                loggedIn ? (
                                     <Navigate to="/" />
                                 ) : (
                                     <Login
@@ -258,7 +276,7 @@ function App() {
                         <Route
                             path="/signup"
                             element={
-                                isLogged ? (
+                                loggedIn ? (
                                     <Navigate to="/" />
                                 ) : (
                                     <Register
@@ -270,10 +288,11 @@ function App() {
                         />
                         <Route path="*" element={<Page404 />} />
                     </Routes>
-                    <Popup
-                        isOpen={isOpenPopup}
-                        onClose={closePopup}
-                        isPopupMessage={isPopupMessage}
+                    <InfoToolTip
+                        isOpen={isOpenToolTip}
+                        onClose={closeToolTip}
+                        isInfoToolTipMessage={isInfoToolTipMessage}
+                        isSuccess={isSucces}
                     />
                 </div>
             </CurrentSavedMoviesContext.Provider>

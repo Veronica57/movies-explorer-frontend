@@ -6,10 +6,10 @@ import Portfolio from "./Portfolio/Portfolio";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
-function Main({ isLogged }) {
+function Main({ loggedIn }) {
     return (
         <>
-            <Header isLogged={isLogged} />
+            <Header loggedIn={loggedIn} />
             <main className="main">
                 <Promo />
                 <AboutProject />

@@ -13,7 +13,7 @@ import {
     REQUEST_ERROR_MESSAGE,
 } from "../../utils/constants";
 
-function Movies({ onClickSaveMovie, isLogged }) {
+function Movies({ onClickSaveMovie, loggedIn }) {
     const [isPreloader, setIsPreloader] = useState(false);
     const [isFoundMovies, setIsFoundMovies] = useState([]);
     const [isRender, setIsRender] = useState(false);
@@ -67,7 +67,7 @@ function Movies({ onClickSaveMovie, isLogged }) {
 
     return (
         <>
-            <Header isLogged={isLogged} />
+            <Header loggedIn={loggedIn} />
             <main className="movies">
                 <SearchForm
                     displayOption={"all"}

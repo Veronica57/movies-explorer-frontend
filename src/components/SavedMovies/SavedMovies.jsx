@@ -8,9 +8,9 @@ import Preloader from "../Movies/Preloader/Preloader";
 import ResponseSection from "../ResponseSection/ResponseSection";
 import { NOT_FOUND_MESSAGE } from "../../utils/constants";
 import { searchSavedMovie } from "../../utils/utils";
-import { CurrentSavedMoviesContext } from "../../contexts/CurrentSavedMoviesContext";
+import { CurrentSavedMoviesContext } from "../../context/CurrentSavedMoviesContext";
 
-function SavedMovies({ onClickDeleteMovie, isLogged }) {
+function SavedMovies({ onClickDeleteMovie, loggedIn }) {
     const savedMovies = useContext(CurrentSavedMoviesContext);
     const [isPreloader, setIsPreloader] = useState(false);
     const [isRender, setIsRender] = useState(false);
@@ -49,7 +49,7 @@ function SavedMovies({ onClickDeleteMovie, isLogged }) {
 
     return (
         <div className="saved-movies">
-            <Header isLogged={isLogged} />
+            <Header loggedIn={loggedIn} />
             <main>
                 <SearchForm
                     displayOption={"save"}

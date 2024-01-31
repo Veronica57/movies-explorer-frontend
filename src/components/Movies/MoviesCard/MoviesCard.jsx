@@ -1,6 +1,6 @@
 import "./MoviesCard.css";
 import { useContext } from "react";
-import { CurrentSavedMoviesContext } from "../../../contexts/CurrentSavedMoviesContext";
+import { CurrentSavedMoviesContext } from "../../../context/CurrentSavedMoviesContext";
 import { getFormattedTime } from "../../../utils/utils";
 
 function MoviesCard({ movie, displayOption, onClickMovieBtn }) {

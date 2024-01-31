@@ -1,10 +1,9 @@
 // export const BASE_MOVIES_URL = "https://api.nomoreparties.co";
 // export const BASE_URL = "api.nikeliot.nomoredomainsmonster.ru";
 
-const REG_EXP_EMAIL =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-z\-0-9]+\.)+[a-z]{2,}))$/i;
+const REG_EXP_EMAIL = "^[^ ]+@[^ ]+.[a-z]{2,3}$";
 
-const REG_EXP_NAME = /^[А-ЯA-Zё\s-]+$/imu;
+const REG_EXP_NAME = "^[A-Za-zА-Яа-яЁё /s -]+$";
 
 const BAD_REQUEST_ERROR_CODE = 400;
 const AUTH_ERROR_CODE = 401;
