@@ -1,7 +1,7 @@
 import "./Login.css";
 import Form from "../Form/Form";
 
-function Login({ onLogin, isResponseMessage }) {
+function Login({ onLogin, responseMessage }) {
     return (
         <Form
             title={"Рады видеть!"}
@@ -9,7 +9,7 @@ function Login({ onLogin, isResponseMessage }) {
             button={"Войти"}
             text={`Еще не зарегистрированы? `}
             onSubmitForm={onLogin}
-            isResponseMessage={isResponseMessage}
+            responseMessage={responseMessage}
         />
     );
 }

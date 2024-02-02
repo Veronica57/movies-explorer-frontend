@@ -14,7 +14,6 @@
 }
 
 .navigation-movies__link {
-    /* color: #fff; */
     color: #000;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -28,8 +27,37 @@
     opacity: 0.7;
 }
 
+.navigation-movies__link_login {
+    color: #fff;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    text-decoration: none;
+}
+
 .active {
     font-weight: 500;
+}
+
+.navigation-movies__profile-link_login {
+    text-decoration: none;
+    width: 100px;
+    height: 32px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 7px;
+    color: #000;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+    border-radius: 40px;
+    background: #2BE080;
+    cursor: pointer;
 }
 
 .navigation-movies__profile-link {
@@ -47,7 +75,6 @@
     font-weight: 500;
     line-height: 12px;
     border-radius: 40px;
-    /* background: #2BE080; */
     background-color: #fff;
     box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
     cursor: pointer;
@@ -77,8 +104,6 @@
     top: 15px;
     right: 30px;
     border: none;
-    /* background-image: url('../../../images/menuHamburger.svg'); */
-    /* background-color: #073042; */
     background-image: url('../../../images/accountBlackSVG.svg');
     background-color: #fff;
     background-position: center;
@@ -87,6 +112,20 @@
 
 .menu-hamburger:hover {
     opacity: 0.7;
+}
+
+.menu-hamburger_main {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: none;
+    top: 15px;
+    right: 30px;
+    border: none;
+    background-image: url('../../../images/menuHamburger.svg');
+    background-color: #073042;
+    background-position: center;
+    cursor: pointer;
 }
 
 .menu-hamburger_close {
@@ -114,6 +153,10 @@
         display: block;
     }
 
+    .menu-hamburger_main {
+        display: block;
+    }
+
     .navigation-movies {
         display: none;
     }
@@ -121,6 +164,12 @@
 
 @media (max-width: 600px) {
     .menu-hamburger {
+        width: 24px;
+        height: 43px;
+        right: 22px;
+    }
+
+    .menu-hamburger_main {
         width: 24px;
         height: 43px;
         right: 22px;

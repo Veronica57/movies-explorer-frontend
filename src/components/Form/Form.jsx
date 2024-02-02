@@ -9,7 +9,7 @@ function Form({
     button,
     text,
     onSubmitForm,
-    isResponseMessage,
+    responseMessage,
 }) {
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
@@ -93,7 +93,7 @@ function Form({
                     <span className="form__input-error">{errors.password}</span>
                 </div>
             </fieldset>
-            <div className="form__response-error">{isResponseMessage}</div>
+            <div className="form__response-error">{responseMessage}</div>
             <button
                 type="submit"
                 className={`form__button ${

@@ -6,51 +6,51 @@ function SearchForm({
     onClickShortMovie,
     displayOption,
 }) {
-    const [isSearchValue, setIsSearchValue] = useState("");
-    const [isShortSwitch, setIsShortSwitch] = useState(false);
-    const [isValidationError, setIsValidationError] = useState("");
+    const [searchValue, setSearchValue] = useState(""); 
+    const [errors, setErrors] = useState("");
     const [isValid, setIsValid] = useState(false);
-
-    function handleChangeSearch(evt) {
-        setIsValidationError(evt.target.validationMessage);
-        setIsSearchValue(evt.target.value);
-        setIsValid(evt.target.closest("form").checkValidity());
-    }
-
-    function onSubmitSearch(evt) {
-        evt.preventDefault();
-        if (!isValid) return;
-        onSubmitSearchMovies(isSearchValue, isShortSwitch);
-        setIsValid(false);
-    }
-
-    function handleChangeShortSwitch() {
-        onClickShortMovie(!isShortSwitch);
-        setIsShortSwitch(!isShortSwitch);
-    }
-
+    const [isActiveCheckbox, setIsActiveCheckbox] = useState(false);
+    
     useEffect(() => {
         if (displayOption === "all") {
             const searchText = localStorage.getItem("searchText");
-            const shortMovieSwitch = localStorage.getItem("shortMovieSwitch");
-            if (searchText && shortMovieSwitch) {
-                setIsSearchValue(searchText);
-                shortMovieSwitch === "true"
-                    ? setIsShortSwitch(true)
-                    : setIsShortSwitch(false);
+            const shortMovieCheckbox = localStorage.getItem("shortMovieSwitch");
+            if (searchText && shortMovieCheckbox) {
+                setSearchValue(searchText);
+                shortMovieCheckbox === "true"
+                    ? setIsActiveCheckbox(true)
+                    : setIsActiveCheckbox(false);
             }
         } else {
             localStorage.setItem("savedMovieSearchText", "");
             localStorage.setItem("shortSavedMovieSwitch", "false");
-            setIsShortSwitch(false);
+            setIsActiveCheckbox(false);
         }
     }, [displayOption]);
+
+    const handleChangeSearch = (evt) => {
+        setErrors(evt.target.validationMessage);
+        setSearchValue(evt.target.value);
+        setIsValid(evt.target.closest("form").checkValidity());
+    }
+
+    const onSubmitSearch = (evt) => {
+        evt.preventDefault();
+        if (!isValid) return;
+        onSubmitSearchMovies(searchValue, isActiveCheckbox);
+        setIsValid(false);
+    }
+
+    const handleChangeCheckbox = () => {
+        onClickShortMovie(!isActiveCheckbox);
+        setIsActiveCheckbox(!isActiveCheckbox);
+    }
 
     return (
         <section className="search">
             <form
                 className={`search__form ${
-                    isValidationError && "search__form-error"
+                    errors && "search__form-error"
                 }`}
                 onSubmit={onSubmitSearch}
                 noValidate>
@@ -59,29 +59,29 @@ function SearchForm({
                     type="text"
                     required
                     placeholder="Фильм"
-                    value={isSearchValue}
+                    value={searchValue}
                     onChange={handleChangeSearch}
                 />
                 <button
-                    className={`search__form-button ${
+                    className={
                         isValid
-                            ? "hover-button"
+                            ? "search__form-button"
                             : "search__form-button_disabled"
-                    }`}
-                    type="button"
+                    }
+                    type="submit"
                     onClick={onSubmitSearch}>
                     Найти
                 </button>
             </form>
-            {/* <div className="search__error">{isValidationError}</div> */}
+            <div className={isValid ? "search__error_hidden":"search__error"}>{errors}</div>
             <div className="search__checkbox-wrapper">
                 <label className="search__label-wrapper">
                     <input
                         className="search__checkbox-default"
-                        checked={isShortSwitch ? true : false}
+                        checked={isActiveCheckbox ? true : false}
                         type="checkbox"
                         value="shortMovieSwitch"
-                        onChange={handleChangeShortSwitch}
+                        onChange={handleChangeCheckbox}
                     />
                     <span className="search__checkbox-custom"></span>
                 </label>

@@ -9,7 +9,7 @@ class MoviesApi {
 
     // get movies
     getMovies() {
-        return fetch(this._baseUrl, {
+        return fetch( this._baseUrl , {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -19,6 +19,7 @@ class MoviesApi {
 
 const moviesApi = new MoviesApi({
     baseUrl: "https://api.nomoreparties.co/beatfilm-movies",
+    
 });
 
 export default moviesApi;

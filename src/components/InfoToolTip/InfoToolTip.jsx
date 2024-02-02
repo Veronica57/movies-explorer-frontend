@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import fail from "../../images/fail.svg";
 import success from "../../images/success.svg";
 
-function InfoToolTip({ onClose, isOpen, isSuccess, isInfoToolTipMessage }) {
+function InfoToolTip({ onClose, isOpen, isSuccess, infoToolTipMessage }) {
 
     function useEscapeClose(isOpen, onClose) {
         useEffect(() => {
@@ -30,7 +30,7 @@ function InfoToolTip({ onClose, isOpen, isSuccess, isInfoToolTipMessage }) {
                     src={isSuccess ? success : fail}
                     alt="Результат запроса"
                 />
-                <p className="info-tooltip__subtitle">{isInfoToolTipMessage}</p>
+                <p className="info-tooltip__subtitle">{infoToolTipMessage}</p>
                 <button
                     className="button info-tooltip__close"
                     type="button"

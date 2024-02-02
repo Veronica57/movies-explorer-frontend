@@ -3,13 +3,18 @@ import { useContext } from "react";
 import { CurrentSavedMoviesContext } from "../../../context/CurrentSavedMoviesContext";
 import { getFormattedTime } from "../../../utils/utils";
 
-function MoviesCard({ movie, displayOption, onClickMovieBtn }) {
+function MoviesCard({
+    movie, displayOption, onClickMovieButton
+}) {
     const CurrentSavedMovies = useContext(CurrentSavedMoviesContext);
+
     const { nameRU, duration, image } = movie;
-    const movieData = CurrentSavedMovies.filter(
+
+    const moviesData = CurrentSavedMovies.filter(
         (item) => item.movieId === movie.id
     );
-    const isSaved = movieData.length > 0;
+
+    const isSaved = moviesData.length > 0;
 
     return (
         <li className="movies-card">
@@ -37,10 +42,10 @@ function MoviesCard({ movie, displayOption, onClickMovieBtn }) {
                                 type="button"
                                 className="movies-card__button movies-card__button_liked"
                                 onClick={() =>
-                                    onClickMovieBtn(
+                                    onClickMovieButton(
                                         movie,
                                         "delete",
-                                        movieData[0]._id
+                                        moviesData[0]._id
                                     )
                                 }></button>
                         ) : (
@@ -48,15 +53,20 @@ function MoviesCard({ movie, displayOption, onClickMovieBtn }) {
                                 type="button"
                                 className="movies-card__button movies-card__button_unliked"
                                 onClick={() =>
-                                    onClickMovieBtn(movie, "save", null)
+                                    onClickMovieButton(movie, "save", null)
                                 }></button>
                         )
-                    ) : (
+                    ) 
+                    : (
                         <button
                             type="button"
                             className="movies-card__button movies-card__button_delete"
-                            onClick={() => onClickMovieBtn(movie._id)}></button>
-                    )}
+                            onClick={() =>
+                                onClickMovieButton(movie._id)
+                            }
+                            ></button>
+                        )
+                    }
                 </div>
                 <p className="movies-card__duration">
                     {getFormattedTime(duration)}

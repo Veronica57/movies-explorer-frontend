@@ -9,14 +9,6 @@ function Header({ loggedIn }) {
             <Link to="/" className="header__logo" />
             <Navigation loggedIn={loggedIn} />
         </header>
-        // <header
-        //     className={
-        //         location.pathname === "/"
-        //             ? "header"
-        //             : "header header_white-theme"
-        //     }>
-        //     <Navigation className="navigation" />
-        // </header>
     );
 }
 

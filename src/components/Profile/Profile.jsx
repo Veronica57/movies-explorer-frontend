@@ -5,7 +5,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 import { REG_EXP_EMAIL, REG_EXP_NAME } from "../../utils/constants";
 import Header from "../Header/Header";
 
-function Profile({ onLogout, loggedIn, onSubmitForm, isResponseMessage }) {
+function Profile({ onLogout, loggedIn, onSubmitForm, responseMessage }) {
     const currentUser = useContext(CurrentUserContext);
     const [isDisabled, setIsDisabled] = useState(true);
     const [isUserData, setIsUserData] = useState({});
@@ -98,7 +98,7 @@ function Profile({ onLogout, loggedIn, onSubmitForm, isResponseMessage }) {
                             {isErorrMessage.email}
                         </div>
                     </div>
-                    <span className="profile__error">{isResponseMessage}</span>
+                    <span className="profile__error">{responseMessage}</span>
                     {isDisabled ? (
                         <div className="profile__buttons">
                             <p
@@ -116,11 +116,11 @@ function Profile({ onLogout, loggedIn, onSubmitForm, isResponseMessage }) {
                     ) : (
                         <button
                             type="submit"
-                            className={`profile__button-save ${
+                            className={
                                 !isValid
                                     ? "profile__button-save_disabled"
-                                    : "profile__button-save hover-button"
-                            }`}
+                                    : "profile__button-save"
+                            }
                             disabled={!isValid}>
                             Сохранить
                         </button>

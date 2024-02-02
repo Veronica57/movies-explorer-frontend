@@ -5,6 +5,11 @@
     /* max-width: 270px; */
 }
 
+.movies-card__trailer {
+    display: flex;
+    height: 100%;
+}
+
 .movies-card__image {
     width: 100%;
     object-fit: cover;
@@ -59,7 +64,7 @@
     display: none;
 }
 
-.movies-card__button-custom {
+.movies-card__button {
     width: 24px;
     height: 24px;
     border: none;
@@ -70,16 +75,19 @@
     display: inline-block;
 }
 
-.movies-card__button-custom:hover {
+.movies-card__button:hover {
     opacity: 0.7;
 }
 
 
-.movies-card__button-deafult:checked+.movies-card__button-custom {
+.movies-card__button_liked {
     background-image: url("../../../images/likedMovie.svg");
     cursor: pointer;
 }
 
+.movies-card__button_liked:hover {
+    opacity: 0.7;
+}
 
 /* .movies-card__button_unliked {
     background-image: url("../../../images/unlikedMovie.svg");

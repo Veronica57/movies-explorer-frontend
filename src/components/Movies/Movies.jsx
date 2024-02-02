@@ -14,57 +14,67 @@ import {
 } from "../../utils/constants";
 
 function Movies({ onClickSaveMovie, loggedIn }) {
-    const [isPreloader, setIsPreloader] = useState(false);
-    const [isFoundMovies, setIsFoundMovies] = useState([]);
-    const [isRender, setIsRender] = useState(false);
-    const [isResponseMessage, setIsResponseMessage] = useState("");
+  
+  const [isPreloader, setIsPreloader] = useState(false);
+  const [foundMovies, setFoundMovies] = useState([]);
+  const [isRender, setIsRender] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
 
-    function renderMovies() {
-        setIsPreloader(false);
-        const foundMovies = searchMovie();
-        if (foundMovies.length === 0) {
-            setIsResponseMessage(NOT_FOUND_MESSAGE);
-            setIsRender(false);
-        } else {
-            setIsFoundMovies(foundMovies);
-            setIsRender(true);
-        }
+  function renderMovies() {
+    setIsPreloader(false);
+    const foundMovies = searchMovie();
+    if (foundMovies.length === 0) {
+      setResponseMessage(NOT_FOUND_MESSAGE);
+      setIsRender(false);
+    } else {
+      setFoundMovies(foundMovies);
+      setIsRender(true);
     }
+  }
 
-    function onSubmitSearchMovies(searchText, shortMovieSwitch) {
-        setIsPreloader(true);
-        localStorage.setItem("searchText", searchText);
-        localStorage.setItem("shortMovieSwitch", shortMovieSwitch);
-        if (!localStorage.getItem("movieDataBase")) {
-            moviesApi
-                .getMovies()
-                .then((result) => {
-                    localStorage.setItem(
-                        "movieDataBase",
-                        JSON.stringify(result)
-                    );
-                    renderMovies();
-                })
-                .catch(() => {
-                    setIsPreloader(false);
-                    setIsResponseMessage(REQUEST_ERROR_MESSAGE);
-                });
-        } else renderMovies();
+  function onSubmitSearchMovies(searchText, shortMovieCheckbox) {
+    setIsPreloader(true);
+    localStorage.setItem("searchText", searchText);
+    localStorage.setItem("shortMovieCheckbox", shortMovieCheckbox);
+    if (!localStorage.getItem("movieDataBase")) {
+      moviesApi
+        .getMovies()
+        .then((result) => {
+          localStorage.setItem("movieDataBase", JSON.stringify(result));
+          renderMovies();
+        })
+        .catch(() => {
+          setIsPreloader(false);
+          setResponseMessage(REQUEST_ERROR_MESSAGE);
+        });
+    } else renderMovies();
+  }
+
+  function onClickShortMovie(shortMovieCheckbox) {
+    localStorage.setItem("shortMovieCheckbox", shortMovieCheckbox);
+    if (localStorage.getItem("movieDataBase")) renderMovies();
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("movieDataBase")) {
+      setIsPreloader(true);
+      setIsRender(true);
+      renderMovies();
+    } else {
+      setIsPreloader(true);
+      moviesApi
+        .getMovies()
+        .then((result) => {
+          localStorage.setItem("movieDataBase", JSON.stringify(result));
+          renderMovies();
+        })
+        .catch(() => {
+          setIsPreloader(false);
+          setResponseMessage(REQUEST_ERROR_MESSAGE);
+        });
     }
-
-    function onClickShortMovie(shortMovieSwitch) {
-        localStorage.setItem("shortMovieSwitch", shortMovieSwitch);
-        if (localStorage.getItem("movieDataBase")) renderMovies();
-    }
-
-    useEffect(() => {
-        if (localStorage.getItem("movieDataBase")) {
-            setIsPreloader(true);
-            setIsRender(true);
-            renderMovies();
-        }
-    }, []);
-
+  }, []);
+    
     return (
         <>
             <Header loggedIn={loggedIn} />
@@ -78,14 +88,14 @@ function Movies({ onClickSaveMovie, loggedIn }) {
                     <Preloader />
                 ) : isRender ? (
                     <MoviesCardList
-                        movies={isFoundMovies}
+                        movies={foundMovies}
                         displayOption={"all"}
-                        onClickMovieBtn={onClickSaveMovie}
+                        onClickMovieButton={onClickSaveMovie}
                     />
                 ) : (
-                    isResponseMessage && (
+                    responseMessage && (
                         <ResponseSection
-                            isResponseMessage={isResponseMessage}
+                            responseMessage={responseMessage}
                         />
                     )
                 )}

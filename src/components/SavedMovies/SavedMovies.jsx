@@ -15,7 +15,7 @@ function SavedMovies({ onClickDeleteMovie, loggedIn }) {
     const [isPreloader, setIsPreloader] = useState(false);
     const [isRender, setIsRender] = useState(false);
     const [isFoundMovies, setIsFoundMovies] = useState([]);
-    const [isResponseMessage, setIsResponseMessage] = useState("");
+    const [responseMessage, setResponseMessage] = useState("");
 
     function renderMovies() {
         setIsPreloader(true);
@@ -23,7 +23,7 @@ function SavedMovies({ onClickDeleteMovie, loggedIn }) {
         if (foundMovies.length === 0) {
             setIsRender(false);
             setIsPreloader(false);
-            setIsResponseMessage(NOT_FOUND_MESSAGE);
+            setResponseMessage(NOT_FOUND_MESSAGE);
         } else {
             setIsRender(true);
             setIsPreloader(false);
@@ -31,14 +31,14 @@ function SavedMovies({ onClickDeleteMovie, loggedIn }) {
         }
     }
 
-    function onSubmitSearchMovies(searchText, shortMovieSwitch) {
+    function onSubmitSearchMovies(searchText, shortMovieCheckbox) {
         localStorage.setItem("savedMovieSearchText", searchText);
-        localStorage.setItem("shortSavedMovieSwitch", shortMovieSwitch);
+        localStorage.setItem("shortSavedMovieCheckbox", shortMovieCheckbox);
         renderMovies();
     }
 
-    function onClickShortMovie(shortMovieSwitch) {
-        localStorage.setItem("shortSavedMovieSwitch", shortMovieSwitch);
+    function onClickShortMovie(shortMovieCheckbox) {
+        localStorage.setItem("shortSavedMovieCheckbox", shortMovieCheckbox);
         renderMovies();
     }
 
@@ -62,12 +62,12 @@ function SavedMovies({ onClickDeleteMovie, loggedIn }) {
                     <MoviesCardList
                         movies={isFoundMovies}
                         displayOption={"save"}
-                        onClickMovieBtn={onClickDeleteMovie}
+                        onClickMovieButton={onClickDeleteMovie}
                     />
                 ) : (
-                    isResponseMessage && (
+                    responseMessage && (
                         <ResponseSection
-                            isResponseMessage={isResponseMessage}
+                            responseMessage={responseMessage}
                         />
                     )
                 )}
