@@ -87,7 +87,6 @@ function App() {
         }
     }, [loggedIn]);
 
-
     const removeResponseMessage = () => {
         setTimeout(() => setResponseMessage(""), MESSAGE_DISPLAY_TIME);
     };
@@ -119,7 +118,7 @@ function App() {
                 } else setResponseMessage(SERVER_ERROR_MESSAGE);
                 removeResponseMessage();
             });
-    }
+    };
 
     // login
     const handleLogin = (userData) => {
@@ -138,10 +137,10 @@ function App() {
                 } else setResponseMessage(SERVER_ERROR_MESSAGE);
                 removeResponseMessage();
             });
-    }
+    };
 
     // logout
-    const handleLogout = () =>{
+    const handleLogout = () => {
         authApi
             .logoutUser()
             .then(() => {
@@ -152,10 +151,10 @@ function App() {
                 navigate("/", { replace: true });
             })
             .catch(() => openToolTip(SERVER_ERROR_MESSAGE));
-    }
+    };
 
     // update user
-   const handleUpdateUser = (userData) => {
+    const handleUpdateUser = (userData) => {
         mainApi
             .editUserInfo(userData)
             .then(() => {
@@ -166,11 +165,11 @@ function App() {
                 setResponseMessage(SERVER_ERROR_MESSAGE);
                 removeResponseMessage();
             });
-    }
+    };
 
     // ***************  MOVIES *******************************//
     // delete movie
-    function onClickDeleteMovie(id) {
+    const handleDeleteMovie = (id) => {
         mainApi
             .deleteMovie(id)
             .then((result) => {
@@ -186,14 +185,14 @@ function App() {
                 } else {
                     openToolTip(SERVER_ERROR_MESSAGE);
                     setIsSuccess(false);
-                };
+                }
             });
-    }
+    };
 
     // save movie
-    function onClickSaveMovie(movie, buttonType, id) {
+    const handleSaveMovie = (movie, buttonType, id) => {
         if (buttonType === "delete") {
-            onClickDeleteMovie(id);
+            handleDeleteMovie(id);
             return;
         }
         const savedMovie = {
@@ -219,7 +218,7 @@ function App() {
                     setIsSuccess(false);
                 }
             });
-    }
+    };
 
     if (!isRender) return <Preloader />;
 
@@ -238,7 +237,7 @@ function App() {
                                 path="/movies"
                                 element={
                                     <Movies
-                                        onClickSaveMovie={onClickSaveMovie}
+                                        onClickSaveMovie={handleSaveMovie}
                                         loggedIn={loggedIn}
                                     />
                                 }
@@ -247,7 +246,7 @@ function App() {
                                 path="/saved-movies"
                                 element={
                                     <SavedMovies
-                                        onClickDeleteMovie={onClickDeleteMovie}
+                                        onClickDeleteMovie={handleDeleteMovie}
                                         loggedIn={loggedIn}
                                     />
                                 }

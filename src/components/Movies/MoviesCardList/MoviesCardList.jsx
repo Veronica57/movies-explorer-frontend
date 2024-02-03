@@ -30,6 +30,10 @@ function MoviesCardList({ movies, displayOption, onClickMovieButton }) {
         return () => window.removeEventListener("resize", handleResize);
     }, [windowWidth]);
 
+    const setCounter = () => {
+        setMoviesCounter(addedMoviesNumber + moviesCounter);
+    }
+
     // counter for added movies
     function checkMoviesQty(windowWidth) {
         switch (true) {
@@ -60,7 +64,7 @@ function MoviesCardList({ movies, displayOption, onClickMovieButton }) {
             <ul className="movies-card-list__cards">
                 {displayOption === "all"
                     ? movies
-                          .slice(0, moviesCounter * currentPage)
+                          .slice(0, moviesCounter )
                           .map((item) => {
                               return (
                                   <MoviesCard
@@ -81,14 +85,14 @@ function MoviesCardList({ movies, displayOption, onClickMovieButton }) {
                           );
                       })}
             </ul>
-            {movies.length > moviesCounter * currentPage &&
-                displayOption === "all" && (
+            {movies.length > moviesCounter  &&
+                displayOption === "all" ? (
                     <More
-                        isButtonHidden={true}
-                        setMovieCounter={() => {
-                            setCurrentPage((prevPage) => prevPage + 1);
-                        }}
+                        isButtonHidden={false}
+                        setMovieCounter={setCounter}
                     />
+            ) : (
+                    <More isButtonHidden={true} />
                 )}
              
         </section>
@@ -96,3 +100,4 @@ function MoviesCardList({ movies, displayOption, onClickMovieButton }) {
 }
 
 export default MoviesCardList;
+

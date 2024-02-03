@@ -7,8 +7,7 @@ function More({ setMovieCounter, isButtonHidden = false }) {
             <button
                 type="button"
                 className={`more__button ${
-                    isButtonHidden ? "" : "more__button_hide"
-                }`}
+                    isButtonHidden && "more__button_hide"}`}
                 onClick={setMovieCounter}>
                 Ещё
             </button>
