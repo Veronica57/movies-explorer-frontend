@@ -55,8 +55,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-    // baseUrl: "https://api.nikeliot.nomoredomainsmonster.ru",
-    baseUrl: "http://localhost:3000",
+    baseUrl: "https://api.nikeliot.nomoredomainsmonster.ru",
+    // baseUrl: "http://localhost:3000",
 });
 
 export default mainApi;
