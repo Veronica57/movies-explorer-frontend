@@ -9,7 +9,7 @@ function AboutMe() {
                 <div className="about-me__content">
                     <h3 className="about-me__name">Вероника</h3>
                     <p className="about-me__description">
-                        Фронтенд-разработчик, 35&nbsp;лет
+                        Фронтенд-разработчик
                     </p>
                     <p className="about-me__history">
                         Я&nbsp;работаю в&nbsp;IT сфере уже несколько лет. Живу
