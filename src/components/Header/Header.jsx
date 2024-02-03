@@ -1,18 +1,13 @@
 import "./Header.css";
+import { Link, useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
-import { useLocation } from "react-router-dom";
 
-function Header() {
+function Header({ loggedIn }) {
     const location = useLocation();
-
     return (
-        <header
-            className={
-                location.pathname === "/"
-                    ? "header"
-                    : "header header_white-theme"
-            }>
-            <Navigation className="navigation" />
+        <header className={location.pathname === '/' ? "header" : "header header_white-theme"}>
+            <Link to="/" className="header__logo" />
+            <Navigation loggedIn={loggedIn} />
         </header>
     );
 }
